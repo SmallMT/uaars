@@ -1,16 +1,19 @@
 package com.example.oauth.resource.server.resource_server.controllers;
 
-import com.example.oauth.resource.server.resource_server.repository.UserRespository;
+import com.example.oauth.resource.server.resource_server.domain.User;
+import com.example.oauth.resource.server.resource_server.repository.UserRepository;
+import com.example.oauth.resource.server.resource_server.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,11 +36,14 @@ public class UserController
 	 * */
 
 	@Autowired
-	private UserRespository userRespository;
+	private UserRepository userRepository;
+
+	@Autowired
+	private MailService mailService;
 
 	@RequestMapping(value = "me",method = RequestMethod.GET)
 	public Object me(Principal principal){
-	   return userRespository.findUserByLogin(principal.getName());
+	   return userRepository.findOneByLogin(principal.getName());
     }
 
 //    @PreAuthorize(value = "hasRole('USER') and #oauth2.hasScope('read')")
@@ -96,5 +102,19 @@ public class UserController
 
         return ResponseEntity.ok(admin);
     }
+
+//    /**
+//     * 注册
+//     * @param registerVM
+//     * @return
+//     */
+//    @RequestMapping(value = "/register")
+//    public Object register(@RequestBody @Valid RegisterVM registerVM) throws URISyntaxException {
+//
+//        User user=userRepository.findOneByLogin("lyt108825").get();
+//        mailService.sendPasswordResetMail(user);
+//	   return registerVM;
+//
+//    }
 }
 

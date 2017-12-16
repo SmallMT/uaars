@@ -3,17 +3,47 @@ server:
   port: 8081
 spring:
   datasource:
-    url: jdbc:mysql://10.10.139.90:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/uaa?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
 
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    database: MYSQL
-    show-sql: true
+    hikari:
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+    jpa:
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      database: MYSQL
+      show-sql: false
+      properties:
+        hibernate.id.new_generator_mappings: true
+   #     hibernate.cache.use_second_level_cache: true
+        hibernate.cache.use_query_cache: false
+        hibernate.generate_statistics: false
+    #    hibernate.cache.region.factory_class: com.example.oauth.resource.server.resource_server.NoDefaultJCacheRegionFactory
+  mail:
+    host: smtp.163.com
+    username: liuyatao1992@163.com
+    password: lyt@1025
     properties:
-      hibernate.format_sql: true
-      hibernate.cache.use_second_level_cache: false
-    hibernate:
-      ddl-auto: update
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+  messages:
+    cache-seconds: 1
+    basename: "i18n/messages"
+jhipster:
+  mail: # specific JHipster mail property, for standard properties see MailProperties
+    from: liuyatao1992@163.com
+ #        base-url: http://199.224.20.102:9090
+    base-url: http://127.0.0.1:8080
