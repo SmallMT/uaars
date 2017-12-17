@@ -160,7 +160,7 @@ public class UserService {
                     user.setEmail(email);
                     user.setLangKey(langKey);
                     user.setImageUrl(imageUrl);
-                            log.debug("Changed Information for User: {}", user);
+                    log.debug("Changed Information for User: {}", user);
                 });
     }
 
@@ -248,6 +248,13 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    public void setTel(String login,String phone){
+       Optional.of(login).flatMap(userRepository::findOneByLogin)
+                .ifPresent(user -> {
+                    user.setTel(phone);
+                });
     }
 
 }

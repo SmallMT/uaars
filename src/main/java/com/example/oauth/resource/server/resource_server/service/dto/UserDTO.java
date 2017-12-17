@@ -4,9 +4,11 @@ package com.example.oauth.resource.server.resource_server.service.dto;
 import com.example.oauth.resource.server.resource_server.Constants;
 import com.example.oauth.resource.server.resource_server.domain.Authority;
 import com.example.oauth.resource.server.resource_server.domain.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -47,13 +49,46 @@ public class UserDTO {
 
     private String createdBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Instant createdDate;
 
     private String lastModifiedBy;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+
+    /**
+     * 微信号
+     */
+    @Column(name = "wechat")
+    private String weChat;
+
+    /**
+     * 身份证号
+     */
+    @Column(name = "identity")
+    private String identity;
+
+    /**
+     * 真实姓名
+     */
+    @Column(name = "name")
+    private String name;
+
+
+    /**
+     * 是否已实名认证
+     */
+    @Column(name = "verified")
+    private boolean verified=false;
+
+    /**
+     * 手机号码
+     */
+    @Column(name = "tel")
+    private String tel;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -179,6 +214,46 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getWeChat() {
+        return weChat;
+    }
+
+    public void setWeChat(String weChat) {
+        this.weChat = weChat;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
     @Override
