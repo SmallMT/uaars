@@ -47,3 +47,7 @@ jhipster:
     from: liuyatao1992@163.com
  #        base-url: http://199.224.20.102:9090
     base-url: http://127.0.0.1:8080
+application:
+  real-name:
+    file-path: "/Users/liuyatao/files"
+

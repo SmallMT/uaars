@@ -1,5 +1,6 @@
 package com.example.oauth.resource.server.resource_server.service;
 
+import com.example.oauth.resource.server.resource_server.ApplicationProperties;
 import com.example.oauth.resource.server.resource_server.AuthoritiesConstants;
 import com.example.oauth.resource.server.resource_server.Constants;
 import com.example.oauth.resource.server.resource_server.SecurityUtils;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -41,13 +43,16 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final ApplicationProperties applicationProperties;
+
    // private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    public UserService(ApplicationProperties applicationProperties,UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
       //  this.cacheManager = cacheManager;
+        this.applicationProperties=applicationProperties;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -199,8 +204,8 @@ public class UserService {
         });
     }
 
-    public void changePassword(String password) {
-        SecurityUtils.getCurrentUserLogin()
+    public void changePassword(String password,String login) {
+        Optional.of(login)
                 .flatMap(userRepository::findOneByLogin)
                 .ifPresent(user -> {
                     String encryptedPassword = passwordEncoder.encode(password);
@@ -256,6 +261,19 @@ public class UserService {
                     user.setTel(phone);
                 });
     }
+
+
+    /**
+     * 更改实名认证
+     * @param login
+     * @param newState
+     */
+    public void updateRealNameSate(String login,String newState){
+
+    }
+
+
+
 
 }
 

@@ -43,7 +43,7 @@ public class UserController
 
 	@RequestMapping(value = "me",method = RequestMethod.GET)
 	public Object me(Principal principal){
-	   return userRepository.findOneByLogin(principal.getName());
+	   return userRepository.findOneByLogin(principal.getName()).get();
     }
 
 //    @PreAuthorize(value = "hasRole('USER') and #oauth2.hasScope('read')")

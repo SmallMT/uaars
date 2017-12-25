@@ -38,5 +38,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+
+    /*认证状态*/
+    @Modifying
+    @Query("update User set verified=:verified,name=:name,identity=:identity where login=:login")
+    void updateVerified(@Param("verified")Boolean verified,@Param("login")String  login,@Param("name") String name,@Param("identity") String identity);
+
 }
 

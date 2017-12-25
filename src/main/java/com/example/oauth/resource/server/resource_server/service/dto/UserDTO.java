@@ -110,6 +110,12 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+
+        this.identity=user.getIdentity();
+        this.tel=user.getTel();
+        this.weChat=user.getWeChat();
+        this.verified=user.isVerified();
+        this.name=user.getName();
     }
 
     public Long getId() {
