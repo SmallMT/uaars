@@ -57,6 +57,7 @@ public class UserDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Instant lastModifiedDate;
 
+    @NotNull
     private Set<String> authorities;
 
     /**
