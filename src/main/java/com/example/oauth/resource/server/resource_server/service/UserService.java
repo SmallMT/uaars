@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,7 +90,7 @@ public class UserService {
     public User registerUser(UserDTO userDTO, String password) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+
         Set<Authority> authorities = new HashSet<>();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin());
@@ -112,7 +109,16 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
-        authorities.add(authority);
+
+        //设置账户角色
+       Iterator<String> authorityIterator = userDTO.getAuthorities().iterator();
+
+       while (authorityIterator.hasNext()){
+           String authorityStr= authorityIterator.next();
+           Authority authority = authorityRepository.findOne(authorityStr);
+           authorities.add(authority);
+       }
+
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
