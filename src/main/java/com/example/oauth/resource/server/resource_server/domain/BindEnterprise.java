@@ -13,6 +13,7 @@ public class BindEnterprise {
     private String creditCode;
 
     private User user;
+    private String businessLicense;
 
 
     @JsonIgnore
@@ -50,7 +51,7 @@ public class BindEnterprise {
     }
 
     @ManyToOne
-    @JsonIgnore
+  //  @JsonIgnore
     public User getUser() {
         return user;
     }
@@ -68,6 +69,16 @@ public class BindEnterprise {
 
     public void setBindAgentList(List<BindAgent> bindAgentList) {
         this.bindAgentList = bindAgentList;
+    }
+
+    @Basic
+    @Column(name = "business_license")
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
     }
 
     @Override

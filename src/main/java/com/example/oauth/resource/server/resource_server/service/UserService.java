@@ -8,6 +8,7 @@ import com.example.oauth.resource.server.resource_server.domain.Authority;
 import com.example.oauth.resource.server.resource_server.domain.User;
 import com.example.oauth.resource.server.resource_server.repository.AuthorityRepository;
 import com.example.oauth.resource.server.resource_server.repository.UserRepository;
+import com.example.oauth.resource.server.resource_server.rest.vm.RegisterVM;
 import com.example.oauth.resource.server.resource_server.service.dto.UserDTO;
 import com.example.oauth.resource.server.resource_server.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -86,43 +87,69 @@ public class UserService {
                             return user;
                 });
     }
+//    狗日的又让改了
+//    public User registerUser(UserDTO userDTO, String password) {
+//
+//        User newUser = new User();
+//
+//        Set<Authority> authorities = new HashSet<>();
+//        String encryptedPassword = passwordEncoder.encode(password);
+//        newUser.setLogin(userDTO.getLogin());
+//        // new user gets initially a generated password
+//        newUser.setPassword(encryptedPassword);
+//        newUser.setFirstName(userDTO.getFirstName());
+//        newUser.setLastName(userDTO.getLastName());
+//        newUser.setEmail(userDTO.getEmail());
+//        newUser.setImageUrl(userDTO.getImageUrl());
+//        if (userDTO.getLangKey() == null) {
+//            newUser.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
+//        } else {
+//            newUser.setLangKey(userDTO.getLangKey());
+//        }
+//        // new user is not active
+//        newUser.setActivated(false);
+//        // new user gets registration key
+//        newUser.setActivationKey(RandomUtil.generateActivationKey());
+//
+//        //设置账户角色
+//       Iterator<String> authorityIterator = userDTO.getAuthorities().iterator();
+//
+//       while (authorityIterator.hasNext()){
+//           String authorityStr= authorityIterator.next();
+//           Authority authority = authorityRepository.findOne(authorityStr);
+//           authorities.add(authority);
+//       }
+//
+//        newUser.setAuthorities(authorities);
+//        userRepository.save(newUser);
+//        log.debug("Created Information for User: {}", newUser);
+//        return newUser;
+//    }
 
-    public User registerUser(UserDTO userDTO, String password) {
-
+    public User registerUser(RegisterVM registerVM){
         User newUser = new User();
 
         Set<Authority> authorities = new HashSet<>();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin());
-        // new user gets initially a generated password
+        String encryptedPassword = passwordEncoder.encode(registerVM.getPassword());
+        newUser.setLogin(registerVM.getLogin());
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        newUser.setEmail(userDTO.getEmail());
-        newUser.setImageUrl(userDTO.getImageUrl());
-        if (userDTO.getLangKey() == null) {
-            newUser.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
-        } else {
-            newUser.setLangKey(userDTO.getLangKey());
-        }
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        newUser.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
 
         //设置账户角色
-       Iterator<String> authorityIterator = userDTO.getAuthorities().iterator();
-
+       Iterator<String> authorityIterator = registerVM.getAuthorities().iterator();
        while (authorityIterator.hasNext()){
            String authorityStr= authorityIterator.next();
            Authority authority = authorityRepository.findOne(authorityStr);
            authorities.add(authority);
        }
 
+        newUser.setTel(registerVM.getPhone());
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+        newUser.setActivated(true);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
+
     }
 
     public User createUser(UserDTO userDTO) {
