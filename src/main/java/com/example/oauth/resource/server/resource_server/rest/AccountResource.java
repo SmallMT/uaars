@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * REST controller for managing the current user's account.
@@ -220,6 +222,23 @@ public class AccountResource {
     }
 
     /**
+     * 更新手机号码
+     * @param updatePhoneVM
+     */
+    @RequestMapping(value = "/account/resetPhone",method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void updatePhone(@RequestBody UpdatePhoneVM updatePhoneVM){
+
+        User user=  userRepository.findOneByLogin(updatePhoneVM.getLogin()).orElseThrow(()->new BadRequestAlertException("没有找到相应用户","user","id"));
+
+       user.setTel(updatePhoneVM.getPhone());
+
+
+
+       userRepository.save(user);
+    }
+
+    /**
      * 给电话号码上发送短信验证码
      *
      * @param phone 电话号码
@@ -385,7 +404,7 @@ public class AccountResource {
      * @param response
      * @throws IOException
      */
-    @RequestMapping(value = "/account/realNameInfor/{login:" + Constants.LOGIN_REGEX + "}/{imageName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/account/realName/{login:" + Constants.LOGIN_REGEX + "}/{imageName}", method = RequestMethod.GET)
     public void testphoto(@PathVariable String login, @PathVariable String imageName, HttpServletResponse response) throws IOException {
         String dir = applicationProperties.getRealName().getFilePath() + "//" + login + "//" + imageName;
         File file = new File(dir);
@@ -399,7 +418,7 @@ public class AccountResource {
      * @param login
      * @return
      */
-    @GetMapping(path = "/account/realNameInfor/{login:" + Constants.LOGIN_REGEX + "}")
+    @GetMapping(path = "/account/realName/{login:" + Constants.LOGIN_REGEX + "}")
     public RealName getRealNameInfo(@PathVariable String login) {
         return realNameRepository.findByLogin(login);
     }
@@ -415,8 +434,7 @@ public class AccountResource {
     public void bindEnterprise(@RequestBody BindEnterpriseVM bindEnterpriseVM) {
 
         //检测统一信用代码是否存在
-        bindEnterpriseRepository.findOneByCreditCode(bindEnterpriseVM.getCreditCode())
-                .orElseThrow(CreditCodeExistException::new);
+        bindEnterpriseRepository.findOneByCreditCode(bindEnterpriseVM.getCreditCode()).ifPresent((bindEnterprise)->{throw  new CreditCodeExistException();});
 
         BindEnterprise bindEnterprise=new BindEnterprise();
 
@@ -433,7 +451,7 @@ public class AccountResource {
     }
 
     /**
-     * 根据编订企业信息表修改绑定的企业
+     * 根据id修改绑定的企业
      */
     @RequestMapping(value = "/account/bindEnterprise",method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
