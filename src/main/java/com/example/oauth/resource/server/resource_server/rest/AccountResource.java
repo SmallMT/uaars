@@ -27,17 +27,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.zalando.problem.AbstractThrowableProblem;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -73,7 +74,7 @@ public class AccountResource {
         this.userService = userService;
         this.mailService = mailService;
         this.applicationProperties = applicationProperties;
-        this.bindEnterpriseRepository=bindEnterpriseRepository;
+        this.bindEnterpriseRepository = bindEnterpriseRepository;
     }
 
     /**
@@ -223,19 +224,15 @@ public class AccountResource {
 
     /**
      * 更新手机号码
+     *
      * @param updatePhoneVM
      */
-    @RequestMapping(value = "/account/resetPhone",method = RequestMethod.PUT)
+    @RequestMapping(value = "/account/resetPhone", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updatePhone(@RequestBody UpdatePhoneVM updatePhoneVM){
-
-        User user=  userRepository.findOneByLogin(updatePhoneVM.getLogin()).orElseThrow(()->new BadRequestAlertException("没有找到相应用户","user","id"));
-
-       user.setTel(updatePhoneVM.getPhone());
-
-
-
-       userRepository.save(user);
+    public void updatePhone(@Valid @RequestBody UpdatePhoneVM updatePhoneVM) {
+        User user = userRepository.findOneByLogin(updatePhoneVM.getLogin()).orElseThrow(() -> new BadRequestAlertException("没有找到相应用户", "user", "id"));
+        user.setTel(updatePhoneVM.getPhone());
+        userRepository.save(user);
     }
 
     /**
@@ -354,46 +351,48 @@ public class AccountResource {
     /**
      * 更新实名认证信息
      */
-    @RequestMapping(value = "/account/realName",method = RequestMethod.PUT)
+    @RequestMapping(value = "/account/realName", method = RequestMethod.PUT, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void upDateRealName(@RequestParam(value = "frontFile") MultipartFile front, @RequestParam(value = "backFile") MultipartFile back, @RequestParam(value = "login",required = true) String login,@RequestParam(value = "state",required = false) String state,@RequestParam(value = "identity",required = false)String identity,@RequestParam(value = "name",required = false)String name) throws IOException {
+    public void upDateRealName(HttpServletRequest request, @RequestParam(value = "frontFile") MultipartFile front, @RequestParam(value = "backFile") MultipartFile back, @RequestParam(value = "login", required = true) String login, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "identity", required = false) String identity, @RequestParam(value = "name", required = false) String name) throws IOException {
 
         String filePath = applicationProperties.getRealName().getFilePath();
         File dir = new File(filePath + "//" + login + "//");
 
 
-       RealName realName = realNameRepository.findByLogin(login);
-       if (realName==null){
-           throw new RealNameNotExistException();
-       }else {
-           if (state!=null){
-               realName.setState(state);
-           }
-           if (identity!=null){
-               realName.setIdentity(identity);
-           }
+        String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
-           if (name!=null){
-               realName.setName(name);
-           }
+        RealName realName = realNameRepository.findByLogin(login);
+        if (realName == null) {
+            throw new RealNameNotExistException();
+        } else {
+            if (state != null) {
+                realName.setState(state);
+            }
+            if (identity != null) {
+                realName.setIdentity(identity);
+            }
 
-           File frontFile, backFile;
+            if (name != null) {
+                realName.setName(name);
+            }
 
-           if (front!=null){
-               frontFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + front.getOriginalFilename());
-               front.transferTo(frontFile);
-               realName.setFrontImage(frontFile.getName());
-           }
+            File frontFile, backFile;
 
-           if (back!=null){
-               backFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + back.getOriginalFilename());
-               back.transferTo(backFile);
-               realName.setBackImage(backFile.getName());
-           }
-           realNameRepository.save(realName);
-       }
+            if (front != null) {
+                frontFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + front.getOriginalFilename());
+                front.transferTo(frontFile);
+                realName.setFrontImage(contextpath + "/api//account/realName/" + login + "/" + frontFile.getName());
+            }
 
+            if (back != null) {
+                backFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + back.getOriginalFilename());
+                back.transferTo(backFile);
+                realName.setBackImage(contextpath + "/api//account/realName/" + login + "/" + backFile.getName());
+            }
+            realNameRepository.save(realName);
+            userRepository.updateVerified(true, realName.getLogin(), realName.getName(), realName.getIdentity());
 
+        }
     }
 
     /**
@@ -408,8 +407,13 @@ public class AccountResource {
     public void testphoto(@PathVariable String login, @PathVariable String imageName, HttpServletResponse response) throws IOException {
         String dir = applicationProperties.getRealName().getFilePath() + "//" + login + "//" + imageName;
         File file = new File(dir);
-        InputStream inputStream = new FileInputStream(file);
-        IOUtils.copy(inputStream, response.getOutputStream());
+        if (!file.exists()) {
+            throw new com.example.oauth.resource.server.resource_server.rest.errors.FileNotFoundException();
+
+        } else {
+            InputStream inputStream = new FileInputStream(file);
+            IOUtils.copy(inputStream, response.getOutputStream());
+        }
     }
 
     /**
@@ -425,65 +429,142 @@ public class AccountResource {
 
 
     /**
-     *
      * 添加绑定企业信息
+     *
      * @param bindEnterpriseVM
      */
-    @RequestMapping(value = "/account/bindEnterprise", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/bindEnterprise", method = RequestMethod.POST, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void bindEnterprise(@RequestBody BindEnterpriseVM bindEnterpriseVM) {
+    public void bindEnterprise(HttpServletRequest request, @RequestParam(value = "businessLicenseFile", required = true) MultipartFile businessLicenseFile, @Valid BindEnterpriseVM bindEnterpriseVM) throws IOException {
+
+        String filePath = applicationProperties.getRealName().getFilePath();
+        File dir = new File(filePath + "//" + bindEnterpriseVM.getLogin() + "//");
+
+        String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
 
         //检测统一信用代码是否存在
-        bindEnterpriseRepository.findOneByCreditCode(bindEnterpriseVM.getCreditCode()).ifPresent((bindEnterprise)->{throw  new CreditCodeExistException();});
+        bindEnterpriseRepository.findOneByCreditCode(bindEnterpriseVM.getCreditCode()).ifPresent((bindEnterprise) -> {
+            throw new CreditCodeExistException();
+        });
 
-        BindEnterprise bindEnterprise=new BindEnterprise();
+        BindEnterprise bindEnterprise = new BindEnterprise();
 
         bindEnterprise.setCreditCode(bindEnterpriseVM.getCreditCode());
         bindEnterprise.setEnterpriseName(bindEnterpriseVM.getEnterpriseName());
-        bindEnterprise.setBusinessLicense(bindEnterpriseVM.getBusinessLicense());
+        bindEnterprise.setEnterpriserAddress(bindEnterpriseVM.getEnterpriseAddress());
+        bindEnterprise.setLegalPersonId(bindEnterpriseVM.getLegalPersonID());
+        bindEnterprise.setLegalPersonPhone(bindEnterpriseVM.getLegalPersonPhone());
+        bindEnterprise.setState(bindEnterpriseVM.getState());
 
-        User user = userRepository.findOneByLogin(bindEnterpriseVM.getLogin()).orElseThrow(()->{
-            return new CanntFindUserException("没有找到相应的用户","bindEnterprise","CanntFindUser");
+        User user = userRepository.findOneByLogin(bindEnterpriseVM.getLogin()).orElseThrow(() -> {
+            return new CanntFindUserException("没有找到相应的用户", "bindEnterprise", "CanntFindUser");
         });
 
         bindEnterprise.setUser(user);
+        File businessLicense;
+
+        if (businessLicenseFile != null) {
+            businessLicense = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + businessLicenseFile.getOriginalFilename());
+            businessLicenseFile.transferTo(businessLicense);
+            bindEnterprise.setBusinessLicenseFile(contextpath + "/api/account/bindEnterprise/" + bindEnterpriseVM.getLogin() + "/" + businessLicense.getName());
+        }
         bindEnterpriseRepository.save(bindEnterprise);
     }
+
 
     /**
      * 根据id修改绑定的企业
      */
-    @RequestMapping(value = "/account/bindEnterprise",method = RequestMethod.PUT)
+    @RequestMapping(value = "/account/bindEnterprise", method = RequestMethod.PUT, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateBindEnterprise(@RequestBody UpdateBindEnterpirseVM updateBindEnterpirseVM){
+    public void updateBindEnterprise(HttpServletRequest request, @RequestParam(value = "businessLicenseFile", required = false) MultipartFile businessLicenseFile, UpdateBindEnterpirseVM updateBindEnterpirseVM) throws IOException {
+
+        String filePath = applicationProperties.getRealName().getFilePath();
+        File dir = new File(filePath + "//" + updateBindEnterpirseVM.getLogin() + "//");
+
+        String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
 
         BindEnterprise bindEnterprise = bindEnterpriseRepository.findOneById(updateBindEnterpirseVM.getId())
                 .orElseThrow(CannotFindBindEnterpriseException::new);
 
-        bindEnterprise.setCreditCode(updateBindEnterpirseVM.getCreditCode());
-        bindEnterprise.setEnterpriseName(updateBindEnterpirseVM.getEnterpriseName());
-        bindEnterprise.setBusinessLicense(updateBindEnterpirseVM.getBusinessLicense());
+        if (updateBindEnterpirseVM.getCreditCode() != null) {
+            bindEnterprise.setCreditCode(updateBindEnterpirseVM.getCreditCode());
+        }
+        if (updateBindEnterpirseVM.getEnterpriseName() != null) {
+            bindEnterprise.setEnterpriseName(updateBindEnterpirseVM.getEnterpriseName());
+        }
 
-        User user = userRepository.findOneByLogin(updateBindEnterpirseVM.getLogin()).orElseThrow(()->{
-            return new CanntFindUserException("没有找到相应的用户","bindEnterprise","CanntFindUser");
-        });
+        if (updateBindEnterpirseVM.getEnterpriseAddress() != null) {
+            bindEnterprise.setEnterpriserAddress(updateBindEnterpirseVM.getEnterpriseAddress());
+        }
+        if (updateBindEnterpirseVM.getLegalPersonID() != null) {
+            bindEnterprise.setLegalPersonId(updateBindEnterpirseVM.getLegalPersonID());
+        }
 
-        bindEnterprise.setUser(user);
+        if (updateBindEnterpirseVM.getLegalPersonPhone() != null) {
+            bindEnterprise.setLegalPersonPhone(updateBindEnterpirseVM.getLegalPersonPhone());
+        }
+        if (updateBindEnterpirseVM.getState() != null) {
+            bindEnterprise.setState(updateBindEnterpirseVM.getState());
+        }
+
+        if (updateBindEnterpirseVM.getLogin() != null) {
+            User user = userRepository.findOneByLogin(updateBindEnterpirseVM.getLogin()).orElseThrow(() -> {
+                return new CanntFindUserException("没有找到相应的用户", "bindEnterprise", "CanntFindUser");
+            });
+
+            bindEnterprise.setUser(user);
+        }
+
+
+        File businessLicense;
+
+        if (businessLicenseFile != null) {
+            //
+            businessLicense = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + businessLicenseFile.getOriginalFilename());
+            businessLicenseFile.transferTo(businessLicense);
+            bindEnterprise.setBusinessLicenseFile(contextpath + "/api/account/bindEnterprise/" + updateBindEnterpirseVM.getLogin() + "/" + businessLicense.getName());
+        }
         bindEnterpriseRepository.save(bindEnterprise);
     }
 
     /**
+     * 查看绑定企业营业执照照片
+     *
+     * @param login
+     * @param imageName
+     * @param response
+     * @param request
+     * @throws IOException
+     */
+    @RequestMapping(value = "/account/bindEnterprise/{login:" + Constants.LOGIN_REGEX + "}/{imageName}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void photo(@PathVariable String login, @PathVariable String imageName, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        String dir = applicationProperties.getRealName().getFilePath() + "//" + login + "//" + imageName;
+        File file = new File(dir);
+        if (!file.exists()) {
+            throw new com.example.oauth.resource.server.resource_server.rest.errors.FileNotFoundException();
+        } else {
+            InputStream inputStream = null;
+            inputStream = new FileInputStream(file);
+            IOUtils.copy(inputStream, response.getOutputStream());
+        }
+    }
+
+    /**
      * 根据统一社会信用代码编号获取绑定企业信息
+     *
      * @param creditCode
      * @return
      */
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/account/bindEnterprise/{creditCode}",method = RequestMethod.GET)
-    public ResponseEntity<BindEnterprise> getBindEnterpriseByCreditCode(@PathVariable String creditCode){
-      return ResponseUtil.wrapOrNotFound(bindEnterpriseRepository.findOneByCreditCode(creditCode));
+    @RequestMapping(value = "/account/bindEnterprise/{creditCode}", method = RequestMethod.GET)
+    public ResponseEntity<BindEnterprise> getBindEnterpriseByCreditCode(@PathVariable String creditCode) {
+        return ResponseUtil.wrapOrNotFound(bindEnterpriseRepository.findOneByCreditCode(creditCode));
 
     }
-
 
 
 }

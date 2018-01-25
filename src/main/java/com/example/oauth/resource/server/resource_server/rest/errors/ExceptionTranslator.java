@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
@@ -79,6 +80,11 @@ public class ExceptionTranslator implements ProblemHandling {
             .with("fieldErrors", fieldErrors)
             .build();
         return create(ex, problem, request);
+    }
+
+    @Override
+    public ResponseEntity<Problem> handleNoHandlerFound(NoHandlerFoundException exception, NativeWebRequest request) {
+        return null;
     }
 
     /**

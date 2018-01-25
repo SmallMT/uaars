@@ -11,7 +11,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    private  static   RealName realName=new RealName();
+    private  static  RealName realName=new RealName();
+
+    private static BindEnterprise bindEnterprise=new BindEnterprise();
 
     public static class RealName {
         private static String filePath="";
@@ -26,5 +28,20 @@ public class ApplicationProperties {
 
     public RealName getRealName() {
         return realName;
+    }
+
+    public static class BindEnterprise{
+        private static String filePath="";
+
+        public String getFilePath() {
+            return filePath;
+        }
+        public void setFilePath(String filePath){
+            this.filePath=filePath;
+        }
+    }
+
+    public BindEnterprise getBindEnterprise() {
+        return bindEnterprise;
     }
 }

@@ -1,9 +1,7 @@
 package com.example.oauth.resource.server.resource_server.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "bind_enterprise", schema = "uaa", catalog = "")
@@ -15,9 +13,19 @@ public class BindEnterprise {
     private User user;
     private String businessLicense;
 
+    private String state;
 
-    @JsonIgnore
-    private List<BindAgent> bindAgentList;
+    private Boolean isLegalPerson;
+
+    private String legalPersonId;
+
+    private String legalPersonPhone;
+
+    private String enterpriserAddress;
+
+    private String businessLicenseFile;
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,16 +69,6 @@ public class BindEnterprise {
     }
 
 
-    @OneToMany(mappedBy = "bindEnterprise")
-    @JsonIgnore
-    public List<BindAgent> getBindAgentList() {
-        return bindAgentList;
-    }
-
-    public void setBindAgentList(List<BindAgent> bindAgentList) {
-        this.bindAgentList = bindAgentList;
-    }
-
     @Basic
     @Column(name = "business_license")
     public String getBusinessLicense() {
@@ -80,6 +78,71 @@ public class BindEnterprise {
     public void setBusinessLicense(String businessLicense) {
         this.businessLicense = businessLicense;
     }
+
+    @Basic
+    @Column(name = "state")
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    @Column(name = "is_legalPerson")
+    @Basic
+    public Boolean getLegalPerson() {
+        return isLegalPerson;
+    }
+
+    public void setLegalPerson(Boolean legalPerson) {
+        isLegalPerson = legalPerson;
+    }
+
+
+    @Basic
+    @Column(name = "legalPerson_id")
+    public String getLegalPersonId() {
+        return legalPersonId;
+    }
+
+    public void setLegalPersonId(String legalPersonId) {
+        this.legalPersonId = legalPersonId;
+    }
+
+
+    @Basic
+    @Column(name = "legalPerson_phone")
+    public String getLegalPersonPhone() {
+        return legalPersonPhone;
+    }
+
+    public void setLegalPersonPhone(String legalPersonPhone) {
+        this.legalPersonPhone = legalPersonPhone;
+    }
+
+    @Basic
+    @Column(name = "enterprise_address")
+    public String getEnterpriserAddress() {
+        return enterpriserAddress;
+    }
+
+    public void setEnterpriserAddress(String enterpriserAddress) {
+        this.enterpriserAddress = enterpriserAddress;
+    }
+
+
+    @Basic
+    @Column(name = "business_license_file")
+    public String getBusinessLicenseFile() {
+        return businessLicenseFile;
+    }
+
+    public void setBusinessLicenseFile(String businessLicenseFile) {
+        this.businessLicenseFile = businessLicenseFile;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

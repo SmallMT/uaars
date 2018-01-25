@@ -1,5 +1,8 @@
 package com.example.oauth.resource.server.resource_server.rest.vm;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
@@ -9,16 +12,36 @@ public class BindEnterpriseVM {
 
 
     @NotNull(message = "登录用户名不能为空")
+    @NotBlank(message = "登录用户名不能为空")
     private String login;
 
     @NotNull(message = "企业名称不能为空")
+    @NotBlank(message = "企业名称不能为空")
     private String enterpriseName;
 
     @NotNull(message = "社会信用统一代码不能为空")
+    @NotBlank(message = "社会信用统一代码不能为空")
     private String creditCode;
 
-    private String businessLicense;
+    @NotNull(message = "状态不能为空")
+    @NotBlank(message = "状态不能为空")
+    private String state;
 
+    @NotNull(message = "法人姓名不能为空")
+    @NotBlank(message = "法人姓名不能为空")
+    private String legalPersonName;
+
+    @NotNull(message = "法人手机号码不能为空")
+    @NotBlank(message = "法人手机号码不能为空")
+    private String legalPersonPhone;
+
+    @NotNull(message = "法人社会信用代码不能为空")
+    @NotBlank(message = "法人社会信用代码不能为空")
+    private String enterpriseAddress;
+
+    @NotNull(message = "法人身份证号码不能为空")
+    @NotBlank(message = "法人身份证号码不能为空")
+    private String legalPersonID;
 
     public Integer getId() {
         return id;
@@ -52,11 +75,43 @@ public class BindEnterpriseVM {
         this.creditCode = creditCode;
     }
 
-    public String getBusinessLicense() {
-        return businessLicense;
+    public String getState() {
+        return state;
     }
 
-    public void setBusinessLicense(String businessLicense) {
-        this.businessLicense = businessLicense;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getLegalPersonName() {
+        return legalPersonName;
+    }
+
+    public void setLegalPersonName(String legalPersonName) {
+        this.legalPersonName = legalPersonName;
+    }
+
+    public String getLegalPersonPhone() {
+        return legalPersonPhone;
+    }
+
+    public void setLegalPersonPhone(String legalPersonPhone) {
+        this.legalPersonPhone = legalPersonPhone;
+    }
+
+    public String getEnterpriseAddress() {
+        return enterpriseAddress;
+    }
+
+    public void setEnterpriseAddress(String enterpriseAddress) {
+        this.enterpriseAddress = enterpriseAddress;
+    }
+
+    public String getLegalPersonID() {
+        return legalPersonID;
+    }
+
+    public void setLegalPersonID(String legalPersonID) {
+        this.legalPersonID = legalPersonID;
     }
 }
