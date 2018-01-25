@@ -19,10 +19,79 @@
 	</parent>
 
 	<properties>
+		<!-- Build properties -->
+		<maven.version>3.0.0</maven.version>
+		<java.version>1.8</java.version>
+		<scala.version>2.12.1</scala.version>
+		<node.version>v8.9.3</node.version>
+		<yarn.version>v1.3.2</yarn.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
+		<m2e.apt.activation>jdt_apt</m2e.apt.activation>
+		<run.addResources>false</run.addResources>
+		<!-- These remain empty unless the corresponding profile is active -->
+		<profile.no-liquibase />
+		<profile.swagger />
+
+		<!-- Dependency versions -->
+		<jhipster-dependencies.version>0.1.6</jhipster-dependencies.version>
+		<!-- The spring-boot version should match the one managed by
+        https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
+		<spring-boot.version>1.5.9.RELEASE</spring-boot.version>
+		<!-- The hibernate version should match the one managed by
+        https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
 		<hibernate.version>5.2.12.Final</hibernate.version>
+		<!-- The javassist version should match the one managed by
+        https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
+		<javassist.version>3.20.0-GA</javassist.version>
+		<!-- The liquibase version should match the one managed by
+        https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
+		<liquibase.version>3.5.3</liquibase.version>
+		<liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		<mapstruct.version>1.2.0.Final</mapstruct.version>
+
+		<!-- Plugin versions -->
+		<maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
+		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+		<maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
+		<maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
+		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+		<maven-war-plugin.version>2.6</maven-war-plugin.version>
+		<dockerfile-maven-plugin.version>1.3.4</dockerfile-maven-plugin.version>
+		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+		<gatling-maven-plugin.version>2.2.1</gatling-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+		<scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
+		<sonar-maven-plugin.version>3.2</sonar-maven-plugin.version>
+		<swagger-codegen-maven-plugin.version>2.2.3</swagger-codegen-maven-plugin.version>
+
+		<!-- Sonar properties -->
+		<sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
+		<sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
+		<!-- Rule https://sonarqube.com/coding_rules#rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
+		<sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*.*</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
+		<sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>Web:BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>
+		<!-- Rule https://sonarqube.com/coding_rules#rule_key=squid%3AS3437 is ignored, as a JPA-managed field cannot be transient -->
+		<sonar.issue.ignore.multicriteria.S3437.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S3437.resourceKey>
+		<sonar.issue.ignore.multicriteria.S3437.ruleKey>squid:S3437</sonar.issue.ignore.multicriteria.S3437.ruleKey>
+		<!-- Rule http://sonarqube.com/coding_rules#rule_key=squid%3AUndocumentedApi is ignored, as we want to follow "clean code" guidelines and classes, methods and arguments names should be self-explanatory -->
+		<sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>
+		<sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>squid:UndocumentedApi</sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>
+		<sonar.jacoco.itReportPath>${project.testresult.directory}/coverage/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
+		<sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
+		<sonar.javascript.jstestdriver.reportsPath>${project.testresult.directory}/karma</sonar.javascript.jstestdriver.reportsPath>
+		<sonar.typescript.lcov.reportPaths>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.typescript.lcov.reportPaths>
+		<sonar.sources>${project.basedir}/src/main/</sonar.sources>
+		<sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
+		<sonar.tests>${project.basedir}/src/test/</sonar.tests>
 	</properties>
 
 	<dependencies>
@@ -182,6 +251,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
 		</dependency>
 
 
@@ -199,6 +269,28 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<fork>true</fork><!-- 如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+						<!-- For JPA static metamodel generation -->
+						<path>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-jpamodelgen</artifactId>
+							<version>${hibernate.version}</version>
+						</path>
+
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 

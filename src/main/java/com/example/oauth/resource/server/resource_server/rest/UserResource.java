@@ -12,7 +12,9 @@ import com.example.oauth.resource.server.resource_server.rest.util.HeaderUtil;
 import com.example.oauth.resource.server.resource_server.rest.util.PaginationUtil;
 import com.example.oauth.resource.server.resource_server.rest.util.ResponseUtil;
 import com.example.oauth.resource.server.resource_server.service.MailService;
+import com.example.oauth.resource.server.resource_server.service.UserQueryService;
 import com.example.oauth.resource.server.resource_server.service.UserService;
+import com.example.oauth.resource.server.resource_server.service.dto.UserCriteria;
 import com.example.oauth.resource.server.resource_server.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,11 +70,14 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final UserQueryService userQueryService;
+
+    public UserResource(UserRepository userRepository, UserService userService, MailService mailService,UserQueryService userQueryService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.userQueryService=userQueryService;
     }
 
     /**
@@ -142,8 +147,8 @@ public class UserResource {
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @GetMapping("/users")
-    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable) {
-        final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
+    public ResponseEntity<Page<UserDTO>> getAllUsers(Pageable pageable, UserCriteria userCriteria) {
+        final Page<UserDTO> page = userQueryService.findByCriteria(userCriteria,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page, headers, HttpStatus.OK);
     }
