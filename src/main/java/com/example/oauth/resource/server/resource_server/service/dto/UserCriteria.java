@@ -12,6 +12,8 @@ public class UserCriteria implements Serializable {
 
     private StringFilter identity;
 
+    private StringFilter wechat;
+
     private BooleanFilter verified;
 
     public StringFilter getLogin() {
@@ -36,5 +38,13 @@ public class UserCriteria implements Serializable {
 
     public void setVerified(BooleanFilter verified) {
         this.verified = verified;
+    }
+
+    public StringFilter getWechat() {
+        return wechat;
+    }
+
+    public void setWechat(StringFilter wechat) {
+        this.wechat = wechat;
     }
 }

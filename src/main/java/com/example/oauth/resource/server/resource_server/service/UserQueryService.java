@@ -51,6 +51,9 @@ public class UserQueryService extends QueryService<User>  {
             if (criteria.getVerified()!= null) {
                 specification = specification.and(buildSpecification(criteria.getVerified(),User_.verified));
             }
+            if (criteria.getWechat()!=null){
+                specification=specification.and(buildStringSpecification(criteria.getWechat(),User_.weChat));
+            }
         }
         return specification;
     }

@@ -921,6 +921,48 @@
 				"description": "根据社会信用代码查看绑定企业信息"
 			},
 			"response": []
+		},
+		{
+			"name": "获取当前登录用户的账户基本信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTczMzc3MDUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiI4NzVkZmFmNy1jMmNmLTQ0YmQtODJhYS05YmUzYWZkOTQ3ZTQiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.ITK5C6NldZW3KnWQFe2MvpmrfOABxzzqbpB7KWWpFoX9t-D6UXbjOpxT3KiVx-yaaWAjQ2AzLwm8jGImm1JKCQAtnMk94T9n9dGmy0yxeozP0F7cU7zXj4ZMm0s_JHHK974_FDikKKVbDCNQZ3rzyQAwVSnSH3U24oNmxaCcRVPDkKkyDJr7lHCZQc2SGdJ6vYyzU2qBC1qE9x9D59QQNN18KSiz49UuB4v_3TMgT6EGqDzMmDUw3MQP-8c3iQ83v2PVjSQgbgR0xhXdYeY4XHmkpk6N6CIzDAbhB0Nkx-bXr8WLntD3pVEsuMGmwx7A2FWXP2oLAp7MDUpJexagYA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account"
+					]
+				},
+				"description": "获取当前登录用户的账户基本信息"
+			},
+			"response": []
 		}
 	]
 }

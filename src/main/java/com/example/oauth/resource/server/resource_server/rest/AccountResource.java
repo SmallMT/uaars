@@ -425,7 +425,7 @@ public class AccountResource {
      */
     @RequestMapping(value = "/account/realName", method = RequestMethod.PUT, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void upDateRealName(HttpServletRequest request, @RequestParam(value = "frontFile") MultipartFile front, @RequestParam(value = "backFile") MultipartFile back, @RequestParam(value = "login", required = true) String login, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "identity", required = false) String identity, @RequestParam(value = "name", required = false) String name) throws IOException {
+    public void upDateRealName(HttpServletRequest request, @RequestParam(value = "frontFile",required = false) MultipartFile front, @RequestParam(value = "backFile",required = false) MultipartFile back, @RequestParam(value = "login", required = true) String login, @RequestParam(value = "state", required = false) String state, @RequestParam(value = "identity", required = false) String identity, @RequestParam(value = "name", required = false) String name) throws IOException {
 
         String filePath = applicationProperties.getRealName().getFilePath();
         File dir = new File(filePath + "//" + login + "//");
