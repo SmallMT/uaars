@@ -1,0 +1,915 @@
+{
+	"info": {
+		"name": "OAuth 2 Res",
+		"_postman_id": "f149154b-2046-de98-42fe-b02ecc021c1f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth 2.0 client_credentials 授权模式获取token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic dGVzdDoxMjM="
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"description": "授权类型",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					]
+				},
+				"description": "获取token"
+			},
+			"response": []
+		},
+		{
+			"name": "使用手机号码注册",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.HLxAfgfM-nwMjoZeU8x6xmvgw4ScfOqNyP5S6JYQN-0XrZjeoEiPQjegSs3MYjQIP4afO5xzfFRfszBOtTU-AOALLMctLalxlaFXt1u-VQjdrxJlT0IOe9LF8rfJUG9fXVoNHsaAPWZ0p2qHVZErJzIZGmEvJIsvddhCmwa-jzWcJMR_3Ar0J-TdkUltJ_Ga-zf-ngOJK0kTlr4KUnPwTuTSq94cJTnuvudTpF9nUT8EMkEZKmE9MRENZaK4LJlbGjEBwTIo9VpSWdbfIENdp0tyet-2Z5-WHu04rTligcRep2jNUz2WyDRGB_Yt6xDl0nWQFoxZKIqkbb2ktm2MBQ",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"phone\":\"17629100289\",\"password\":\"ffff\",\"authorities\":[\"ROLE_ADMIN\"],\"login\":\"liuyatao1992\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"register"
+					]
+				},
+				"description": "使用login(用户民)、password(密码)、email(邮箱) 注册用户。注册成功返回201，注册提交信息错误400"
+			},
+			"response": []
+		},
+		{
+			"name": "外部使用手机号码注册发送验证码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"phone\":\"17629100289\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/outerRegister/init",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"outerRegister",
+						"init"
+					]
+				},
+				"description": "外部使用手机号码注册发送验证码"
+			},
+			"response": []
+		},
+		{
+			"name": "外部使用手机号码注册",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\":\"76666666\",\"password\":\"ffff\",\"phone\":\"17629100289\",\"smsCode\":\"599797\",\"authorities\":[\"ROLE_USER\"]}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/outerRegister/finish",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"outerRegister",
+						"finish"
+					]
+				},
+				"description": "外部使用手机号码注册"
+			},
+			"response": []
+		},
+		{
+			"name": "修改手机号码",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\":\"lyt1025\",\"phone\":\"17629100289\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/resetPhone",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"resetPhone"
+					]
+				},
+				"description": "修改手机号码"
+			},
+			"response": []
+		},
+		{
+			"name": "重置用户密码",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\":\"22\",\"password\":\"123456\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"change-password"
+					]
+				},
+				"description": "修改密码"
+			},
+			"response": []
+		},
+		{
+			"name": "根据用户名查看用户基本信息",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/users/22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users",
+						"22"
+					]
+				},
+				"description": "根据用户名查看用户基本信息，最后的路径变量为用户名。成功返回200"
+			},
+			"response": []
+		},
+		{
+			"name": "分页获取用户基本信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/users?page=0&verified.equals=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"equals": true,
+							"description": "页号，从0开始"
+						},
+						{
+							"key": "identity.equals",
+							"value": "610124199210250915",
+							"equals": true,
+							"warning": "",
+							"disabled": true
+						},
+						{
+							"key": "verified.equals",
+							"value": "true",
+							"equals": true
+						}
+					]
+				},
+				"description": "分页获取用户基本信息"
+			},
+			"response": []
+		},
+		{
+			"name": "上传实名认证信息",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "22",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "identity",
+							"value": "62772727727727",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "frontFile",
+							"value": "",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "backFile",
+							"value": "",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "name",
+							"value": "liuyatao",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "通过",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "60",
+							"description": "如果有id则进行修改操作，如果没有id则是添加",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/realName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"realName"
+					]
+				},
+				"description": "上传实名认证图片"
+			},
+			"response": []
+		},
+		{
+			"name": "更改实名认证信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "frontFile",
+							"value": "",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "backFile",
+							"value": "",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "login",
+							"value": "lyt1025",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "通过",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "identity",
+							"value": "26",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/realName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"realName"
+					]
+				},
+				"description": "更改实名认证信息"
+			},
+			"response": []
+		},
+		{
+			"name": "查看指定用户的实名认证信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account/realName/lyt1025",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"realName",
+						"lyt1025"
+					]
+				},
+				"description": "查看22登录用户的实名认证信息"
+			},
+			"response": []
+		},
+		{
+			"name": "查看指定用户的实名认证的图片",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "bearer {{token}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account/realNameInfor/22/c3050ae9-9bee-4089-b27d-6393c6d256e0Screen Shot 2017-04-18 at 4.47.53 PM.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"realNameInfor",
+						"22",
+						"c3050ae9-9bee-4089-b27d-6393c6d256e0Screen Shot 2017-04-18 at 4.47.53 PM.png"
+					]
+				},
+				"description": "根据登录用户名和图片文件查看图片"
+			},
+			"response": []
+		},
+		{
+			"name": "根据用户名修改手机号码",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.HLxAfgfM-nwMjoZeU8x6xmvgw4ScfOqNyP5S6JYQN-0XrZjeoEiPQjegSs3MYjQIP4afO5xzfFRfszBOtTU-AOALLMctLalxlaFXt1u-VQjdrxJlT0IOe9LF8rfJUG9fXVoNHsaAPWZ0p2qHVZErJzIZGmEvJIsvddhCmwa-jzWcJMR_3Ar0J-TdkUltJ_Ga-zf-ngOJK0kTlr4KUnPwTuTSq94cJTnuvudTpF9nUT8EMkEZKmE9MRENZaK4LJlbGjEBwTIo9VpSWdbfIENdp0tyet-2Z5-WHu04rTligcRep2jNUz2WyDRGB_Yt6xDl0nWQFoxZKIqkbb2ktm2MBQ",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\":\"lyt1025\",\"phone\":\"110\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/resetPhone",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"resetPhone"
+					]
+				},
+				"description": "修改手机号码"
+			},
+			"response": []
+		},
+		{
+			"name": "添加企业绑定信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "businessLicenseFile",
+							"value": "",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "login",
+							"value": "lyt1025",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "enterpriseName",
+							"value": "通过",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "creditCode",
+							"value": "61044",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "enterpriseAddress",
+							"value": "rr",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "legalPersonID",
+							"value": "rr",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "legalPersonName",
+							"value": "rr",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "已验证",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "legalPersonPhone",
+							"value": "333",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/bindEnterprise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"bindEnterprise"
+					]
+				},
+				"description": "添加绑定企业信息"
+			},
+			"response": []
+		},
+		{
+			"name": "更改绑定企业信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "admin",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "enterpriseName",
+							"value": "测试企222业名称1111111",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "creditCode",
+							"value": "34556667722",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "id",
+							"value": "14",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/account/bindEnterprise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"bindEnterprise"
+					]
+				},
+				"description": "修改绑定企业信息"
+			},
+			"response": []
+		},
+		{
+			"name": "查看用户绑定企业的营业执照信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account/bindEnterprise/lyt1025/e71a7222-f97f-4f50-81ed-ef1b7320f912WX20180111-151036@2x.png",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"bindEnterprise",
+						"lyt1025",
+						"e71a7222-f97f-4f50-81ed-ef1b7320f912WX20180111-151036@2x.png"
+					]
+				},
+				"description": "查看用户绑定企业的营业执照信息"
+			},
+			"response": []
+		},
+		{
+			"name": "根据社会信用代码查看绑定企业信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account/bindEnterprise/61044",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account",
+						"bindEnterprise",
+						"61044"
+					]
+				},
+				"description": "根据社会信用代码查看绑定企业信息"
+			},
+			"response": []
+		}
+	]
+}
