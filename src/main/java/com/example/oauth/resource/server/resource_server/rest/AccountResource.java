@@ -320,8 +320,8 @@ public class AccountResource {
     public RealName uploadImage(@RequestParam(value = "frontFile", required = true) MultipartFile front, @RequestParam(value = "backFile", required = true) MultipartFile back, @Valid RealName realName) throws IOException {
 
         //查看是否有该用户的认证信息
-        if (userRepository.findOneByLogin(realName.getLogin()).isPresent()){
-            throw new CanntFindUserException("已存在该用户的实名认证信息","user","user.login");
+        if (!userRepository.findOneByLogin(realName.getLogin()).isPresent()){
+            throw new CanntFindUserException("用户不存在","user","user.login");
         }
         else if (null != realNameRepository.findByLogin(realName.getLogin()) && realName.getId() == null) {
             throw new RealNameExistException();
