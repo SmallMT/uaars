@@ -342,10 +342,8 @@ public class AccountResource {
 
             String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
-            realName.setBackImage(backFile.getName());
             realName.setFrontImage(contextpath + "/api/account/realName/" + realName.getLogin() + "/" + frontFile.getName());
 
-            realName.setFrontImage(frontFile.getName());
             realName.setBackImage(contextpath + "/api/account/realName/" + realName.getLogin() + "/" + backFile.getName());
 
             RealName result = realNameRepository.save(realName);
