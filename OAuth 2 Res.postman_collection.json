@@ -868,14 +868,14 @@
 			"response": []
 		},
 		{
-			"name": "根据社会信用代码查看绑定企业信息",
+			"name": "查看绑定企业信息",
 			"request": {
 				"auth": {
 					"type": "oauth2",
 					"oauth2": [
 						{
 							"key": "accessToken",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.WoT1kVJr9EEUXfQJPqZAamAKze0DuFfVvo-jQtWqqGiM7hOzS3UmkA6mL6-fvVM2uK8hQdZ4PDEDM8AQhnt1aLIE2ZP19ZkR_dR8mzm1Q2_65bwylX065aXOt2R5m1-tnM8gvnWfDw2B5zhGSuVZBSCqN8Wbcpz_KVZOdT-Ygx9HOSwOzi4aXaYyrKH_SyYTdAmk1yb4wpABuGO_svy1avbqDXa-VKxYn-jGP1z6J8afP16rD_A9-_Uh6ReyuaA4mYUtt9rmN_3jpgAT4-aFhU-2zke8cnFQliMahoaeftFCrtk9tdR2SGOPHYqVMM1PvZPt05V8tp8MF-rX4aO2Qg",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTczMzc3MDUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiI4NzVkZmFmNy1jMmNmLTQ0YmQtODJhYS05YmUzYWZkOTQ3ZTQiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.ITK5C6NldZW3KnWQFe2MvpmrfOABxzzqbpB7KWWpFoX9t-D6UXbjOpxT3KiVx-yaaWAjQ2AzLwm8jGImm1JKCQAtnMk94T9n9dGmy0yxeozP0F7cU7zXj4ZMm0s_JHHK974_FDikKKVbDCNQZ3rzyQAwVSnSH3U24oNmxaCcRVPDkKkyDJr7lHCZQc2SGdJ6vYyzU2qBC1qE9x9D59QQNN18KSiz49UuB4v_3TMgT6EGqDzMmDUw3MQP-8c3iQ83v2PVjSQgbgR0xhXdYeY4XHmkpk6N6CIzDAbhB0Nkx-bXr8WLntD3pVEsuMGmwx7A2FWXP2oLAp7MDUpJexagYA",
 							"type": "string"
 						},
 						{
@@ -894,7 +894,7 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8081/api/account/bindEnterprise/61044",
+					"raw": "http://localhost:8081/api/account/bindEnterprise?login.equals=lyt1025&creditCode.equals=444",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -903,8 +903,19 @@
 					"path": [
 						"api",
 						"account",
-						"bindEnterprise",
-						"61044"
+						"bindEnterprise"
+					],
+					"query": [
+						{
+							"key": "login.equals",
+							"value": "lyt1025",
+							"equals": true
+						},
+						{
+							"key": "creditCode.equals",
+							"value": "444",
+							"equals": true
+						}
 					]
 				},
 				"description": "根据社会信用代码查看绑定企业信息"
