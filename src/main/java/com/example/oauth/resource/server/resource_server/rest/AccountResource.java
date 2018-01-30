@@ -14,8 +14,10 @@ import com.example.oauth.resource.server.resource_server.repository.UserReposito
 import com.example.oauth.resource.server.resource_server.rest.errors.*;
 import com.example.oauth.resource.server.resource_server.rest.util.ResponseUtil;
 import com.example.oauth.resource.server.resource_server.rest.vm.*;
+import com.example.oauth.resource.server.resource_server.service.BindEnterpriseQueryService;
 import com.example.oauth.resource.server.resource_server.service.MailService;
 import com.example.oauth.resource.server.resource_server.service.UserService;
+import com.example.oauth.resource.server.resource_server.service.dto.BindEnterpriseCriteria;
 import com.example.oauth.resource.server.resource_server.service.dto.UserDTO;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -25,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -62,12 +66,19 @@ public class AccountResource {
 
     private final BindEnterpriseRepository bindEnterpriseRepository;
 
+    private final BindEnterpriseQueryService bindEnterpriseQueryService;
+
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
 
     private ApplicationProperties applicationProperties;
 
-    public AccountResource(ApplicationProperties applicationProperties, UserRepository userRepository, RealNameRepository realNameRepository, UserService userService, MailService mailService, BindEnterpriseRepository bindEnterpriseRepository) {
+    public AccountResource(ApplicationProperties applicationProperties,
+                           UserRepository userRepository,
+                           RealNameRepository realNameRepository,
+                           UserService userService,
+                           MailService mailService,
+                           BindEnterpriseRepository bindEnterpriseRepository, BindEnterpriseQueryService bindEnterpriseQueryService) {
 
         this.userRepository = userRepository;
         this.realNameRepository = realNameRepository;
@@ -75,6 +86,7 @@ public class AccountResource {
         this.mailService = mailService;
         this.applicationProperties = applicationProperties;
         this.bindEnterpriseRepository = bindEnterpriseRepository;
+        this.bindEnterpriseQueryService=bindEnterpriseQueryService;
     }
 
     /**
@@ -614,16 +626,15 @@ public class AccountResource {
     }
 
     /**
-     * 根据统一社会信用代码编号获取绑定企业信息
+     * 查看企业绑定信息
      *
-     * @param creditCode
+     * @param
      * @return
      */
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/account/bindEnterprise/{creditCode}", method = RequestMethod.GET)
-    public ResponseEntity<BindEnterprise> getBindEnterpriseByCreditCode(@PathVariable String creditCode) {
-        return ResponseUtil.wrapOrNotFound(bindEnterpriseRepository.findOneByCreditCode(creditCode));
-
+    @RequestMapping(value = "/account/bindEnterprise", method = RequestMethod.GET)
+    public Page<BindEnterprise> getBindEnterprises(BindEnterpriseCriteria bindEnterpriseCriteria, Pageable pageable) {
+        return bindEnterpriseQueryService.findByCriteria(bindEnterpriseCriteria,pageable);
     }
 
 
