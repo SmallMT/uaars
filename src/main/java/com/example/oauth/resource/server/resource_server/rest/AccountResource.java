@@ -515,11 +515,6 @@ public class AccountResource {
         String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
 
-        //检测统一信用代码是否存在
-        bindEnterpriseRepository.findOneByCreditCode(bindEnterpriseVM.getCreditCode()).ifPresent((bindEnterprise) -> {
-            throw new CreditCodeExistException();
-        });
-
         BindEnterprise bindEnterprise = new BindEnterprise();
 
         bindEnterprise.setCreditCode(bindEnterpriseVM.getCreditCode());
