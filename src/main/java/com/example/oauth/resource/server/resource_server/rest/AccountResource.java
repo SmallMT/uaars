@@ -317,7 +317,7 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/realName", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public RealName uploadImage(@RequestParam(value = "frontFile", required = true) MultipartFile front, @RequestParam(value = "backFile", required = true) MultipartFile back, @Valid RealName realName) throws IOException {
+    public RealName uploadImage(HttpServletRequest request,@RequestParam(value = "frontFile", required = true) MultipartFile front, @RequestParam(value = "backFile", required = true) MultipartFile back, @Valid RealName realName) throws IOException {
 
         //查看是否有该用户的认证信息
         if (!userRepository.findOneByLogin(realName.getLogin()).isPresent()){
@@ -340,8 +340,14 @@ public class AccountResource {
             front.transferTo(frontFile);
             back.transferTo(backFile);
 
+            String contextpath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+
             realName.setBackImage(backFile.getName());
+            realName.setFrontImage(contextpath + "/api/account/realName/" + realName.getLogin() + "/" + frontFile.getName());
+
             realName.setFrontImage(frontFile.getName());
+            realName.setBackImage(contextpath + "/api/account/realName/" + realName.getLogin() + "/" + backFile.getName());
+
             RealName result = realNameRepository.save(realName);
             userRepository.updateVerified(true, realName.getLogin(), realName.getName(), realName.getIdentity());
 
@@ -384,13 +390,13 @@ public class AccountResource {
             if (front != null) {
                 frontFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + front.getOriginalFilename());
                 front.transferTo(frontFile);
-                realName.setFrontImage(contextpath + "/api//account/realName/" + login + "/" + frontFile.getName());
+                realName.setFrontImage(contextpath + "/api/account/realName/" + login + "/" + frontFile.getName());
             }
 
             if (back != null) {
                 backFile = new File(dir.getAbsolutePath() + "//" + UUID.randomUUID().toString() + back.getOriginalFilename());
                 back.transferTo(backFile);
-                realName.setBackImage(contextpath + "/api//account/realName/" + login + "/" + backFile.getName());
+                realName.setBackImage(contextpath + "/api/account/realName/" + login + "/" + backFile.getName());
             }
             realNameRepository.save(realName);
             userRepository.updateVerified(true, realName.getLogin(), realName.getName(), realName.getIdentity());
