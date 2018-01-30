@@ -25,6 +25,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
+        http.authorizeRequests().antMatchers("/api/outerRegister/**").permitAll();
+
         http.exceptionHandling()
                 .authenticationEntryPoint(problemSupport)
                 .accessDeniedHandler(problemSupport);

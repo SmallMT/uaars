@@ -103,6 +103,12 @@ public class AccountResource {
         userService.registerUser(registerVM);
     }
 
+    @RequestMapping(method = RequestMethod.POST,value = "/SMSCode")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void sendSMSCode(@Valid @RequestBody SmsVm smsVm){
+
+
+    }
     /**
      * GET  /activate : activate the registered user.
      *
@@ -240,7 +246,7 @@ public class AccountResource {
      *
      * @param phone 电话号码
      */
-    @PostMapping(path = "/account/set-tel/init")
+    @PostMapping(path = "/outerRegister/init")
     public void requestTelSet(@RequestBody String phone) throws IOException {
 
         //请求地址
@@ -271,19 +277,26 @@ public class AccountResource {
         }
     }
 
+
     /**
-     * 验证短信验证码
-     *
-     * @param phoneAndCodeVM
+     * 外部注册
+     * @param outerRegisterVM
+     * @throws IOException
      */
-    @PostMapping(path = "/account/set-tel/finish")
-    public void finishRequestTelSet(@RequestBody @Valid PhoneAndCodeVM phoneAndCodeVM) throws IOException {
+    @PostMapping(path = "/outerRegister/finish")
+    public void outerRegister(@RequestBody @Valid OuterRegisterVM outerRegisterVM) throws IOException {
+
+        //判断用户名是否已经存在
+        Optional<User> user = userRepository.findOneByLogin(outerRegisterVM.getLogin());
+        if (user.isPresent()) {
+            throw new LoginAlreadyUsedException();
+        }
         //请求地址
-        String url = "https://api.leancloud.cn/1.1/verifySmsCode/" + phoneAndCodeVM.getCode();
+        String url = "https://api.leancloud.cn/1.1/verifySmsCode/" + outerRegisterVM.getSmsCode();
 
 
         JSONObject obj = new JSONObject();
-        obj.put("mobilePhoneNumber", phoneAndCodeVM.getPhone());
+        obj.put("mobilePhoneNumber", outerRegisterVM.getPhone());
 
         /*http请求*/
         OkHttpClient client = new OkHttpClient();
@@ -304,10 +317,50 @@ public class AccountResource {
         //验证失败
         if (!json.isEmpty()) {
             throw new VerficationCodeInvalidException(json.getString("error"));
+        }else {
+            userService.registerUser(outerRegisterVM);
         }
-        //将结果写入
-        userService.setTel(phoneAndCodeVM.getLogin(), phoneAndCodeVM.getPhone());
+
     }
+
+
+    /**
+     * 验证短信验证码
+     *
+     * @param phoneAndCodeVM
+     */
+//    @PostMapping(path = "/account/set-tel/finish")
+//    public void finishRequestTelSet(@RequestBody @Valid PhoneAndCodeVM phoneAndCodeVM) throws IOException {
+//        //请求地址
+//        String url = "https://api.leancloud.cn/1.1/verifySmsCode/" + phoneAndCodeVM.getCode();
+//
+//
+//        JSONObject obj = new JSONObject();
+//        obj.put("mobilePhoneNumber", phoneAndCodeVM.getPhone());
+//
+//        /*http请求*/
+//        OkHttpClient client = new OkHttpClient();
+//        okhttp3.RequestBody body = okhttp3.RequestBody.create(JSON, obj.toJSONString());
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .header("X-LC-Id", "iej5bQfs0fnQ1jUiIoCRVNLS-gzGzoHsz")
+//                .addHeader("X-LC-Key", "YjEaXzNDJpha3MRlNleVxuDF")
+//                .addHeader("Content-Type", "application/json")
+//                .build();
+//
+//        Response response = client.newCall(request).execute();
+//
+//        String responseBody = response.body().string();
+//
+//        JSONObject json = com.alibaba.fastjson.JSON.parseObject(responseBody);
+//        //验证失败
+//        if (!json.isEmpty()) {
+//            throw new VerficationCodeInvalidException(json.getString("error"));
+//        }
+//        //将结果写入
+//        userService.setTel(phoneAndCodeVM.getLogin(), phoneAndCodeVM.getPhone());
+//    }
 
     /**
      * 添加实名认证信息
