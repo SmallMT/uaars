@@ -250,6 +250,48 @@
 			"response": []
 		},
 		{
+			"name": "获取当前登录用户的账户基本信息",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTczNDYzMTIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIxM2U5OWM3Ny1iMzJmLTQwNTAtODEzNy1jNGQ1MDQwYTI4ZTMiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.Ex68yUzhK0heD8Rnn-EG9k75dka8O_10noBjmHmJiNA9DhSE1JI073qqeW-bxp-LbEHQPBrE9TZeDALZA8G7-eWFl-hJMzEs8R_IbDu5qUjvr5FDtQd4rje4KozMf0sWe7Cl_2w4w_mEUs4li3aULig7Stjxu3LWQT0UUq7TGLy3hkb3v7AloZvPWv_UVV3dvy--n5BiOZMPOy9ws6GXIbyu7rTfqjFR9CgM_xdK9LvrW0z2BDdseiTvWzszmn1qGkOCJIrKlOQj9cWExx7EsFMzioPXlC5Sc0BDdocg3GZGKgRvv2goEScetyYKrTgkb5LVrGgaXlUeNW2oIBOtbQ",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8081/api/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"account"
+					]
+				},
+				"description": "获取当前登录用户的账户基本信息"
+			},
+			"response": []
+		},
+		{
 			"name": "根据用户名查看用户基本信息",
 			"request": {
 				"method": "GET",
@@ -923,14 +965,14 @@
 			"response": []
 		},
 		{
-			"name": "获取当前登录用户的账户基本信息",
+			"name": "绑定企业审核状态",
 			"request": {
 				"auth": {
 					"type": "oauth2",
 					"oauth2": [
 						{
 							"key": "accessToken",
-							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTczMzc3MDUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiI4NzVkZmFmNy1jMmNmLTQ0YmQtODJhYS05YmUzYWZkOTQ3ZTQiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.ITK5C6NldZW3KnWQFe2MvpmrfOABxzzqbpB7KWWpFoX9t-D6UXbjOpxT3KiVx-yaaWAjQ2AzLwm8jGImm1JKCQAtnMk94T9n9dGmy0yxeozP0F7cU7zXj4ZMm0s_JHHK974_FDikKKVbDCNQZ3rzyQAwVSnSH3U24oNmxaCcRVPDkKkyDJr7lHCZQc2SGdJ6vYyzU2qBC1qE9x9D59QQNN18KSiz49UuB4v_3TMgT6EGqDzMmDUw3MQP-8c3iQ83v2PVjSQgbgR0xhXdYeY4XHmkpk6N6CIzDAbhB0Nkx-bXr8WLntD3pVEsuMGmwx7A2FWXP2oLAp7MDUpJexagYA",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTc2MDgyODQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJhZjlhMGFjNC00YmQwLTQyZmMtYTZiNi1kM2IzYjMwNzhjMzAiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl19.BNQbtr-refbLO3eFPSbtR18V3dRzplB3wa8w28bNx4Ot--iHD-8VPZyu38cQjwuaYYGxOeAOML2Gf3MmfTmg3R7He3gUEZxlr94R58GoH66ZGqzDk1tZCWU1ajuf70a4p0xCFcyssD7cQl-JD-8kh4AZUtQf7AYlS11e3MbIcH1_ejKyuvfwYFQ-PGTbhlU3sHBDqL07BoCCuZAYE5EOeFsN_pQ4Ovg_in3N6TF8gzrwkKk6BR89bS4J03lJNExRsFe8XeEbh1jGt4bplB7h7CiwNpFwcYXHKWdO2bcapH0vk2VKVNQA-BMyEE3rKLH3AgyCHJ1lhocrCWI_SJrsxA",
 							"type": "string"
 						},
 						{
@@ -945,11 +987,19 @@
 						}
 					]
 				},
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":18,\"state\":\"已验证\"}"
+				},
 				"url": {
-					"raw": "http://localhost:8081/api/account",
+					"raw": "http://localhost:8081/api/account/bindEnterprise/state",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -957,10 +1007,12 @@
 					"port": "8081",
 					"path": [
 						"api",
-						"account"
+						"account",
+						"bindEnterprise",
+						"state"
 					]
 				},
-				"description": "获取当前登录用户的账户基本信息"
+				"description": "绑定企业审核状态（已验证、不通过），不同信息将会被删除"
 			},
 			"response": []
 		}
