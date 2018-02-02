@@ -632,5 +632,19 @@ public class AccountResource {
         return bindEnterpriseQueryService.findByCriteria(bindEnterpriseCriteria,pageable);
     }
 
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/account/bindEnterprise/state", method = RequestMethod.PUT)
+    public void  checkBindEnterprise(@RequestBody @Valid BindEnterpriseCheckVM bindEnterpriseCheckVM){
+
+      BindEnterprise bindEnterprise =  bindEnterpriseRepository.findOneById(bindEnterpriseCheckVM.getId()).orElseThrow(CannotFindBindEnterpriseException::new);
+
+      if ("已验证".equals(bindEnterpriseCheckVM.getState())){
+          bindEnterprise.setState(bindEnterpriseCheckVM.getState());
+          bindEnterpriseRepository.save(bindEnterprise);
+      }else if ("不通过".equals(bindEnterpriseCheckVM.getState())){
+          bindEnterpriseRepository.delete(bindEnterprise);
+      }
+
+    }
 
 }
