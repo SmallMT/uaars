@@ -25,6 +25,9 @@ public class BindEnterprise {
 
     private String businessLicenseFile;
 
+    private String legalPersonName;
+
+
 
 
     @Id
@@ -100,6 +103,8 @@ public class BindEnterprise {
     }
 
 
+
+
     @Basic
     @Column(name = "legalPerson_id")
     public String getLegalPersonId() {
@@ -131,6 +136,16 @@ public class BindEnterprise {
         this.enterpriserAddress = enterpriserAddress;
     }
 
+
+    @Basic
+    @Column(name = "legal_person_name")
+    public String getLegalPersonName() {
+        return legalPersonName;
+    }
+
+    public void setLegalPersonName(String legalPersonName) {
+        this.legalPersonName = legalPersonName;
+    }
 
     @Basic
     @Column(name = "business_license_file")

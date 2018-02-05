@@ -523,6 +523,7 @@ public class AccountResource {
         bindEnterprise.setLegalPersonId(bindEnterpriseVM.getLegalPersonID());
         bindEnterprise.setLegalPersonPhone(bindEnterpriseVM.getLegalPersonPhone());
         bindEnterprise.setState(bindEnterpriseVM.getState());
+        bindEnterprise.setLegalPersonName(bindEnterpriseVM.getLegalPersonName());
 
         User user = userRepository.findOneByLogin(bindEnterpriseVM.getLogin()).orElseThrow(() -> {
             return new CanntFindUserException("没有找到相应的用户", "bindEnterprise", "CanntFindUser");
