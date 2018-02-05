@@ -53,6 +53,9 @@ public class BindEnterpriseQueryService extends QueryService<BindEnterprise>  {
                     specification = specification.and(buildReferringEntitySpecification(criteria.getLogin(),BindEnterprise_.user,User_.login));
 
             }
+            if (criteria.getState()!=null){
+                specification=specification.and(buildStringSpecification(criteria.getState(),BindEnterprise_.state));
+            }
         }
         return specification;
     }

@@ -11,6 +11,8 @@ public class BindEnterpriseCriteria implements Serializable {
 
     private StringFilter creditCode;
 
+    private StringFilter state;
+
     public StringFilter getLogin() {
         return login;
     }
@@ -26,4 +28,13 @@ public class BindEnterpriseCriteria implements Serializable {
     public void setCreditCode(StringFilter creditCode) {
         this.creditCode = creditCode;
     }
+
+    public StringFilter getState() {
+        return state;
+    }
+
+    public void setState(StringFilter state) {
+        this.state = state;
+    }
 }
+
