@@ -936,7 +936,7 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8081/api/account/bindEnterprise?login.equals=lyt1025&creditCode.equals=444",
+					"raw": "http://localhost:8081/api/account/bindEnterprise?login.equals=lyt1025&creditCode.equals=444&state.equals=待验证",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -956,6 +956,11 @@
 						{
 							"key": "creditCode.equals",
 							"value": "444",
+							"equals": true
+						},
+						{
+							"key": "state.equals",
+							"value": "待验证",
 							"equals": true
 						}
 					]
