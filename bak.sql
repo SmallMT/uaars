@@ -1,0 +1,727 @@
+-- MySQL dump 10.13  Distrib 5.7.20, for osx10.13 (x86_64)
+--
+-- Host: localhost    Database: uaa
+-- ------------------------------------------------------
+-- Server version	5.7.20
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `DATABASECHANGELOG`
+--
+
+DROP TABLE IF EXISTS `DATABASECHANGELOG`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DATABASECHANGELOG` (
+  `ID` varchar(255) NOT NULL,
+  `AUTHOR` varchar(255) NOT NULL,
+  `FILENAME` varchar(255) NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) NOT NULL,
+  `MD5SUM` varchar(35) DEFAULT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `COMMENTS` varchar(255) DEFAULT NULL,
+  `TAG` varchar(255) DEFAULT NULL,
+  `LIQUIBASE` varchar(20) DEFAULT NULL,
+  `CONTEXTS` varchar(255) DEFAULT NULL,
+  `LABELS` varchar(255) DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DATABASECHANGELOG`
+--
+
+LOCK TABLES `DATABASECHANGELOG` WRITE;
+/*!40000 ALTER TABLE `DATABASECHANGELOG` DISABLE KEYS */;
+INSERT INTO `DATABASECHANGELOG` VALUES ('00000000000001','jhipster','config/liquibase/changelog/00000000000000_initial_schema.xml','2017-09-12 15:58:27',1,'EXECUTED','7:a91966e379c49b41dd5b60b86be5e082','createTable tableName=jhi_user; createIndex indexName=idx_user_login, tableName=jhi_user; createIndex indexName=idx_user_email, tableName=jhi_user; createTable tableName=jhi_authority; createTable tableName=jhi_user_authority; addPrimaryKey tableN...','',NULL,'3.5.3',NULL,NULL,'5203106706');
+/*!40000 ALTER TABLE `DATABASECHANGELOG` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `DATABASECHANGELOGLOCK`
+--
+
+DROP TABLE IF EXISTS `DATABASECHANGELOGLOCK`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DATABASECHANGELOGLOCK`
+--
+
+LOCK TABLES `DATABASECHANGELOGLOCK` WRITE;
+/*!40000 ALTER TABLE `DATABASECHANGELOGLOCK` DISABLE KEYS */;
+INSERT INTO `DATABASECHANGELOGLOCK` VALUES (1,'','2017-09-19 10:12:19','192.168.5.65 (192.168.5.65)');
+/*!40000 ALTER TABLE `DATABASECHANGELOGLOCK` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app`
+--
+
+DROP TABLE IF EXISTS `app`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app` (
+  `app_id` varchar(36) NOT NULL,
+  `access_token_validity_seconds` int(11) NOT NULL,
+  `app_name` varchar(255) NOT NULL,
+  `app_secret` varchar(255) NOT NULL,
+  `app_url` varchar(255) NOT NULL,
+  `refresh_token_validity_seconds` int(11) NOT NULL,
+  PRIMARY KEY (`app_id`),
+  UNIQUE KEY `app_name` (`app_name`) USING BTREE,
+  UNIQUE KEY `app_url` (`app_url`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app`
+--
+
+LOCK TABLES `app` WRITE;
+/*!40000 ALTER TABLE `app` DISABLE KEYS */;
+INSERT INTO `app` VALUES ('00000000-0000-0000-0000-000000000000',1800,'Moneygr','00000000-0000-0000-0000-000000000000','http://localhost:18080',259200),('00000000-0000-0000-0000-000000000001',180,'Guest App','00000000-0000-0000-0000-000000000001','https://guest.example.com',10800),('00000000-0000-0000-0000-000000000002',180,'3rd App','00000000-0000-0000-0000-000000000002','https://3rd.example.com',10800),('00000000-0000-0000-0000-00000000000a',1800,'CredHub','00000000-0000-0000-0000-00000000000a','http://localhost:9000',259200);
+/*!40000 ALTER TABLE `app` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_auto_approve_scopes`
+--
+
+DROP TABLE IF EXISTS `app_auto_approve_scopes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_auto_approve_scopes` (
+  `app_app_id` varchar(36) NOT NULL,
+  `auto_approve_scopes` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_auto_approve_scopes_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_auto_approve_scopes`
+--
+
+LOCK TABLES `app_auto_approve_scopes` WRITE;
+/*!40000 ALTER TABLE `app_auto_approve_scopes` DISABLE KEYS */;
+INSERT INTO `app_auto_approve_scopes` VALUES ('00000000-0000-0000-0000-000000000000','member.read'),('00000000-0000-0000-0000-000000000000','member.write'),('00000000-0000-0000-0000-000000000001','member.read'),('00000000-0000-0000-0000-000000000001','member.write');
+/*!40000 ALTER TABLE `app_auto_approve_scopes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_grant_types`
+--
+
+DROP TABLE IF EXISTS `app_grant_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_grant_types` (
+  `app_app_id` varchar(36) NOT NULL,
+  `grant_types` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_grant_types_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_grant_types`
+--
+
+LOCK TABLES `app_grant_types` WRITE;
+/*!40000 ALTER TABLE `app_grant_types` DISABLE KEYS */;
+INSERT INTO `app_grant_types` VALUES ('00000000-0000-0000-0000-000000000000','AUTHORIZATION_CODE'),('00000000-0000-0000-0000-000000000000','IMPLICIT'),('00000000-0000-0000-0000-000000000000','PASSWORD'),('00000000-0000-0000-0000-000000000000','REFRESH_TOKEN'),('00000000-0000-0000-0000-000000000001','AUTHORIZATION_CODE'),('00000000-0000-0000-0000-000000000001','IMPLICIT'),('00000000-0000-0000-0000-000000000001','PASSWORD'),('00000000-0000-0000-0000-000000000001','REFRESH_TOKEN'),('00000000-0000-0000-0000-000000000002','AUTHORIZATION_CODE'),('00000000-0000-0000-0000-000000000002','IMPLICIT'),('00000000-0000-0000-0000-000000000002','REFRESH_TOKEN'),('00000000-0000-0000-0000-00000000000a','PASSWORD'),('00000000-0000-0000-0000-00000000000a','AUTHORIZATION_CODE'),('00000000-0000-0000-0000-00000000000a','REFRESH_TOKEN'),('00000000-0000-0000-0000-00000000000a','REFRESH_TOKEN');
+/*!40000 ALTER TABLE `app_grant_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_redirect_urls`
+--
+
+DROP TABLE IF EXISTS `app_redirect_urls`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_redirect_urls` (
+  `app_app_id` varchar(36) NOT NULL,
+  `redirect_urls` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_redirect_urls_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_redirect_urls`
+--
+
+LOCK TABLES `app_redirect_urls` WRITE;
+/*!40000 ALTER TABLE `app_redirect_urls` DISABLE KEYS */;
+INSERT INTO `app_redirect_urls` VALUES ('00000000-0000-0000-0000-000000000000','http://localhost:18080/login'),('00000000-0000-0000-0000-000000000001','https://guest.example.com/login'),('00000000-0000-0000-0000-000000000002','https://3rd.example.com/login'),('00000000-0000-0000-0000-00000000000a','http://localhost:9000/login');
+/*!40000 ALTER TABLE `app_redirect_urls` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_resource_ids`
+--
+
+DROP TABLE IF EXISTS `app_resource_ids`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_resource_ids` (
+  `app_app_id` varchar(36) NOT NULL,
+  `resource_ids` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_resource_ids_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_resource_ids`
+--
+
+LOCK TABLES `app_resource_ids` WRITE;
+/*!40000 ALTER TABLE `app_resource_ids` DISABLE KEYS */;
+INSERT INTO `app_resource_ids` VALUES ('00000000-0000-0000-0000-00000000000a','credhub');
+/*!40000 ALTER TABLE `app_resource_ids` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_roles`
+--
+
+DROP TABLE IF EXISTS `app_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_roles` (
+  `app_app_id` varchar(36) NOT NULL,
+  `roles` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_roles_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_roles`
+--
+
+LOCK TABLES `app_roles` WRITE;
+/*!40000 ALTER TABLE `app_roles` DISABLE KEYS */;
+INSERT INTO `app_roles` VALUES ('00000000-0000-0000-0000-000000000000','CLIENT'),('00000000-0000-0000-0000-000000000000','TRUSTED_CLIENT'),('00000000-0000-0000-0000-000000000001','CLIENT'),('00000000-0000-0000-0000-000000000002','CLIENT'),('00000000-0000-0000-0000-00000000000a','CLIENT');
+/*!40000 ALTER TABLE `app_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `app_scopes`
+--
+
+DROP TABLE IF EXISTS `app_scopes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `app_scopes` (
+  `app_app_id` varchar(36) NOT NULL,
+  `scopes` varchar(255) NOT NULL,
+  KEY `app_app_id` (`app_app_id`) USING BTREE,
+  CONSTRAINT `app_scopes_ibfk_1` FOREIGN KEY (`app_app_id`) REFERENCES `app` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `app_scopes`
+--
+
+LOCK TABLES `app_scopes` WRITE;
+/*!40000 ALTER TABLE `app_scopes` DISABLE KEYS */;
+INSERT INTO `app_scopes` VALUES ('00000000-0000-0000-0000-000000000000','member.read'),('00000000-0000-0000-0000-000000000000','member.write'),('00000000-0000-0000-0000-000000000001','member.read'),('00000000-0000-0000-0000-000000000002','member.read'),('00000000-0000-0000-0000-000000000002','member.write'),('00000000-0000-0000-0000-00000000000a','credhub.write'),('00000000-0000-0000-0000-00000000000a','credhub.read');
+/*!40000 ALTER TABLE `app_scopes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bind_agent`
+--
+
+DROP TABLE IF EXISTS `bind_agent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bind_agent` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `bind_enterprise_id` int(11) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FKs94gxuok4fq8fbsq73vsv855r` (`bind_enterprise_id`) USING BTREE,
+  KEY `FKtb5c7p8y3pf8nbhnsiqashkrf` (`user_id`) USING BTREE,
+  CONSTRAINT `FKs94gxuok4fq8fbsq73vsv855r` FOREIGN KEY (`bind_enterprise_id`) REFERENCES `bind_enterprise` (`ID`),
+  CONSTRAINT `FKtb5c7p8y3pf8nbhnsiqashkrf` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `bind_agent_ibfk_1` FOREIGN KEY (`bind_enterprise_id`) REFERENCES `bind_enterprise` (`ID`),
+  CONSTRAINT `bind_agent_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `bind_agent_ibfk_3` FOREIGN KEY (`bind_enterprise_id`) REFERENCES `bind_enterprise` (`ID`),
+  CONSTRAINT `bind_agent_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bind_agent`
+--
+
+LOCK TABLES `bind_agent` WRITE;
+/*!40000 ALTER TABLE `bind_agent` DISABLE KEYS */;
+INSERT INTO `bind_agent` VALUES (4,5,15);
+/*!40000 ALTER TABLE `bind_agent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bind_enterprise`
+--
+
+DROP TABLE IF EXISTS `bind_enterprise`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bind_enterprise` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `enterprise_name` varchar(255) DEFAULT NULL,
+  `credit_code` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `business_license` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT '待验证' COMMENT '状态：已验证、待验证',
+  `enterprise_address` varchar(255) DEFAULT NULL,
+  `is_legal_person` bit(1) DEFAULT NULL,
+  `legal_person_id` varchar(255) DEFAULT NULL,
+  `legal_person_phone` varchar(255) DEFAULT NULL,
+  `business_license_file` varchar(255) DEFAULT NULL,
+  `legal_person_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FKpt4sg52sppujf3mgbadlp3nf9` (`user_id`) USING BTREE,
+  CONSTRAINT `FKpt4sg52sppujf3mgbadlp3nf9` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `bind_enterprise_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `bind_enterprise_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bind_enterprise`
+--
+
+LOCK TABLES `bind_enterprise` WRITE;
+/*!40000 ALTER TABLE `bind_enterprise` DISABLE KEYS */;
+INSERT INTO `bind_enterprise` VALUES (5,'444','444',14,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(7,'44444','4444',3,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(8,'666666','6666',3,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(9,'555555','555',3,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(10,'6666','666',3,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(11,'rrrrr','rrr',15,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(12,'ddddd','ddddd',15,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(13,'4444','4444',15,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(14,'测试企222业名称1111111','444',3,NULL,'待验证',NULL,NULL,NULL,NULL,NULL,NULL),(18,'测试企222业名称111111111',NULL,3,'rrrrr','已验证',NULL,NULL,NULL,NULL,NULL,NULL),(19,'rrr','rrr444444rrrrr',14,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,'rrr','rrr444444444rrrrr',14,NULL,'已验证','测试地点',NULL,'测试身份证','rr',NULL,NULL),(21,'通过','610',14,NULL,'','',NULL,'','',NULL,NULL),(22,'通过','61044',14,NULL,'已验证','rr',NULL,'rr','333','http://localhost:8081/api/account/bindEnterprise/lyt1025/e71a7222-f97f-4f50-81ed-ef1b7320f912WX20180111-151036@2x.png',NULL);
+/*!40000 ALTER TABLE `bind_enterprise` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `client_details`
+--
+
+DROP TABLE IF EXISTS `client_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `client_details` (
+  `app_id` varchar(255) NOT NULL,
+  `access_token_validity` int(11) DEFAULT NULL,
+  `additional_information` varchar(255) DEFAULT NULL,
+  `app_secret` varchar(255) DEFAULT NULL,
+  `authorities` varchar(255) DEFAULT NULL,
+  `auto_approve_scopes` varchar(255) DEFAULT NULL,
+  `grant_types` varchar(255) DEFAULT NULL,
+  `redirect_url` varchar(255) DEFAULT NULL,
+  `refresh_token_validity` int(11) DEFAULT NULL,
+  `resource_ids` varchar(255) DEFAULT NULL,
+  `scope` varchar(255) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `client_details_app_id_uindex` (`app_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `client_details`
+--
+
+LOCK TABLES `client_details` WRITE;
+/*!40000 ALTER TABLE `client_details` DISABLE KEYS */;
+INSERT INTO `client_details` VALUES ('test',500000,NULL,'123',NULL,'read,write','authorization_code,refresh_token,implicit,password,client_credentials','http://localhost:8082/client/myInfor',500000,NULL,'read,write',45),('testApplication',8000,NULL,'UNMcjhvf18TWOTx541TI',NULL,'read,write','authorization_code,refresh_token,implicit,password,client_credentials','http://localhost:8082',8000,NULL,'read,write',46),('eee',444,NULL,'ONUDCYmhcRlAPpHDqeWw',NULL,'read,write','authorization_code,refresh_token,implicit,password,client_credentials','http://localhost:8082',44444,NULL,'read,write',47);
+/*!40000 ALTER TABLE `client_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `hibernate_sequence`
+--
+
+DROP TABLE IF EXISTS `hibernate_sequence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hibernate_sequence` (
+  `next_val` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hibernate_sequence`
+--
+
+LOCK TABLES `hibernate_sequence` WRITE;
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
+INSERT INTO `hibernate_sequence` VALUES (48);
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_authority`
+--
+
+DROP TABLE IF EXISTS `jhi_authority`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_authority` (
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_authority`
+--
+
+LOCK TABLES `jhi_authority` WRITE;
+/*!40000 ALTER TABLE `jhi_authority` DISABLE KEYS */;
+INSERT INTO `jhi_authority` VALUES ('ROLE_ADMIN'),('ROLE_USER');
+/*!40000 ALTER TABLE `jhi_authority` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_persistent_audit_event`
+--
+
+DROP TABLE IF EXISTS `jhi_persistent_audit_event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_persistent_audit_event` (
+  `event_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `principal` varchar(50) NOT NULL,
+  `event_date` timestamp NULL DEFAULT NULL,
+  `event_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`event_id`),
+  KEY `idx_persistent_audit_event` (`principal`,`event_date`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=323 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_persistent_audit_event`
+--
+
+LOCK TABLES `jhi_persistent_audit_event` WRITE;
+/*!40000 ALTER TABLE `jhi_persistent_audit_event` DISABLE KEYS */;
+INSERT INTO `jhi_persistent_audit_event` VALUES (1,'test','2017-12-16 07:35:42','AUTHENTICATION_SUCCESS'),(2,'test','2017-12-16 07:49:39','AUTHENTICATION_SUCCESS'),(3,'test','2017-12-16 07:49:45','AUTHENTICATION_SUCCESS'),(4,'test','2017-12-16 08:01:47','AUTHENTICATION_SUCCESS'),(5,'test','2017-12-16 08:07:06','AUTHENTICATION_SUCCESS'),(6,'test','2017-12-16 08:07:09','AUTHENTICATION_SUCCESS'),(7,'test','2017-12-16 08:16:02','AUTHENTICATION_SUCCESS'),(8,'test','2017-12-16 08:16:16','AUTHENTICATION_SUCCESS'),(9,'test','2017-12-16 08:19:04','AUTHENTICATION_SUCCESS'),(10,'test','2017-12-16 08:20:14','AUTHENTICATION_SUCCESS'),(11,'test','2017-12-16 08:21:56','AUTHENTICATION_SUCCESS'),(12,'test','2017-12-16 08:23:42','AUTHENTICATION_SUCCESS'),(13,'test','2017-12-16 08:26:35','AUTHENTICATION_SUCCESS'),(14,'test','2017-12-16 08:26:45','AUTHENTICATION_SUCCESS'),(15,'test','2017-12-16 08:29:21','AUTHENTICATION_SUCCESS'),(16,'test','2017-12-16 08:32:30','AUTHENTICATION_SUCCESS'),(17,'test','2017-12-16 08:32:41','AUTHENTICATION_SUCCESS'),(18,'test','2017-12-16 08:32:56','AUTHENTICATION_SUCCESS'),(19,'test','2017-12-16 08:35:15','AUTHENTICATION_SUCCESS'),(20,'test','2017-12-16 08:35:25','AUTHENTICATION_SUCCESS'),(21,'test','2017-12-16 08:39:15','AUTHENTICATION_SUCCESS'),(22,'test','2017-12-16 08:46:57','AUTHENTICATION_SUCCESS'),(23,'test','2017-12-16 08:47:12','AUTHENTICATION_SUCCESS'),(24,'test','2017-12-16 08:47:18','AUTHENTICATION_SUCCESS'),(25,'access-token','2017-12-17 03:06:08','AUTHENTICATION_FAILURE'),(26,'test','2017-12-17 03:07:09','AUTHENTICATION_SUCCESS'),(27,'test','2017-12-17 03:50:15','AUTHENTICATION_SUCCESS'),(28,'test','2017-12-17 03:51:55','AUTHENTICATION_SUCCESS'),(29,'test','2017-12-17 03:55:52','AUTHENTICATION_SUCCESS'),(30,'test','2017-12-17 03:59:42','AUTHENTICATION_SUCCESS'),(31,'test','2017-12-17 04:00:03','AUTHENTICATION_SUCCESS'),(32,'test','2017-12-17 04:02:17','AUTHENTICATION_SUCCESS'),(33,'test','2017-12-17 04:05:01','AUTHENTICATION_SUCCESS'),(34,'test','2017-12-17 07:18:41','AUTHENTICATION_SUCCESS'),(35,'test','2017-12-17 07:22:15','AUTHENTICATION_SUCCESS'),(36,'test','2017-12-17 07:28:51','AUTHENTICATION_SUCCESS'),(37,'test','2017-12-17 07:29:33','AUTHENTICATION_SUCCESS'),(38,'test','2017-12-17 07:31:36','AUTHENTICATION_SUCCESS'),(39,'test','2017-12-17 07:32:33','AUTHENTICATION_SUCCESS'),(40,'access-token','2017-12-18 01:49:55','AUTHENTICATION_FAILURE'),(41,'test','2017-12-18 01:51:03','AUTHENTICATION_SUCCESS'),(42,'test','2017-12-18 01:52:51','AUTHENTICATION_SUCCESS'),(43,'test','2017-12-18 01:52:56','AUTHENTICATION_SUCCESS'),(44,'test','2017-12-18 01:54:08','AUTHENTICATION_SUCCESS'),(45,'test','2017-12-18 01:54:23','AUTHENTICATION_SUCCESS'),(46,'test','2017-12-18 01:56:08','AUTHENTICATION_SUCCESS'),(47,'test','2017-12-18 01:58:03','AUTHENTICATION_SUCCESS'),(48,'test','2017-12-18 03:00:26','AUTHENTICATION_SUCCESS'),(49,'test','2017-12-18 03:14:02','AUTHENTICATION_SUCCESS'),(50,'test','2017-12-18 03:14:47','AUTHENTICATION_SUCCESS'),(51,'test','2017-12-18 03:17:13','AUTHENTICATION_SUCCESS'),(52,'test','2017-12-18 03:17:33','AUTHENTICATION_SUCCESS'),(53,'test','2017-12-18 03:23:01','AUTHENTICATION_SUCCESS'),(54,'test','2017-12-18 03:26:52','AUTHENTICATION_SUCCESS'),(55,'test','2017-12-18 03:27:01','AUTHENTICATION_SUCCESS'),(56,'test','2017-12-18 03:27:20','AUTHENTICATION_SUCCESS'),(57,'test','2017-12-18 03:31:12','AUTHENTICATION_SUCCESS'),(58,'test','2017-12-18 03:43:17','AUTHENTICATION_SUCCESS'),(59,'test','2017-12-18 03:45:01','AUTHENTICATION_SUCCESS'),(60,'test','2017-12-18 03:45:33','AUTHENTICATION_SUCCESS'),(61,'test','2017-12-18 03:52:17','AUTHENTICATION_SUCCESS'),(62,'test','2017-12-18 03:52:23','AUTHENTICATION_SUCCESS'),(63,'test','2017-12-18 03:52:52','AUTHENTICATION_SUCCESS'),(64,'test','2017-12-18 03:53:27','AUTHENTICATION_SUCCESS'),(65,'test','2017-12-18 03:56:09','AUTHENTICATION_SUCCESS'),(66,'test','2017-12-18 03:57:41','AUTHENTICATION_SUCCESS'),(67,'test','2017-12-18 03:59:39','AUTHENTICATION_SUCCESS'),(68,'test','2017-12-18 06:28:54','AUTHENTICATION_SUCCESS'),(69,'test','2017-12-18 06:29:38','AUTHENTICATION_SUCCESS'),(70,'test','2017-12-18 06:31:01','AUTHENTICATION_SUCCESS'),(71,'test','2017-12-18 06:32:45','AUTHENTICATION_SUCCESS'),(72,'test','2017-12-18 06:33:40','AUTHENTICATION_SUCCESS'),(73,'test','2017-12-18 06:33:58','AUTHENTICATION_SUCCESS'),(74,'test','2017-12-18 06:34:07','AUTHENTICATION_SUCCESS'),(75,'test','2017-12-18 06:34:20','AUTHENTICATION_SUCCESS'),(76,'test','2017-12-18 07:02:20','AUTHENTICATION_SUCCESS'),(77,'test','2017-12-18 07:02:27','AUTHENTICATION_SUCCESS'),(78,'test','2017-12-18 07:03:14','AUTHENTICATION_SUCCESS'),(79,'test','2017-12-18 07:07:44','AUTHENTICATION_SUCCESS'),(80,'test','2017-12-18 07:25:02','AUTHENTICATION_SUCCESS'),(81,'test','2017-12-18 07:26:37','AUTHENTICATION_SUCCESS'),(82,'test','2017-12-18 07:49:06','AUTHENTICATION_SUCCESS'),(83,'test','2017-12-18 07:49:20','AUTHENTICATION_SUCCESS'),(84,'test','2017-12-18 07:49:48','AUTHENTICATION_SUCCESS'),(85,'test','2017-12-18 08:03:19','AUTHENTICATION_SUCCESS'),(86,'test','2017-12-18 08:05:37','AUTHENTICATION_SUCCESS'),(87,'test','2017-12-18 08:06:03','AUTHENTICATION_SUCCESS'),(88,'test','2017-12-18 08:09:33','AUTHENTICATION_SUCCESS'),(89,'test','2017-12-18 08:12:37','AUTHENTICATION_SUCCESS'),(90,'test','2017-12-18 08:13:47','AUTHENTICATION_SUCCESS'),(91,'test','2017-12-18 08:14:37','AUTHENTICATION_SUCCESS'),(92,'test','2017-12-18 08:14:42','AUTHENTICATION_SUCCESS'),(93,'test','2017-12-18 08:40:37','AUTHENTICATION_SUCCESS'),(94,'test','2017-12-18 08:41:42','AUTHENTICATION_SUCCESS'),(95,'test','2017-12-18 08:41:46','AUTHENTICATION_SUCCESS'),(96,'test','2017-12-18 08:42:14','AUTHENTICATION_SUCCESS'),(97,'test','2017-12-18 08:43:10','AUTHENTICATION_SUCCESS'),(98,'test','2017-12-18 08:43:38','AUTHENTICATION_SUCCESS'),(99,'test','2017-12-18 08:44:38','AUTHENTICATION_SUCCESS'),(100,'test','2017-12-18 08:50:31','AUTHENTICATION_SUCCESS'),(101,'test','2017-12-18 08:50:57','AUTHENTICATION_SUCCESS'),(102,'test','2017-12-18 08:51:06','AUTHENTICATION_SUCCESS'),(103,'test','2017-12-18 08:57:33','AUTHENTICATION_SUCCESS'),(104,'test','2017-12-18 08:57:56','AUTHENTICATION_SUCCESS'),(105,'test','2017-12-18 09:01:37','AUTHENTICATION_SUCCESS'),(106,'test','2017-12-18 09:01:52','AUTHENTICATION_SUCCESS'),(107,'admin','2017-12-18 10:21:10','AUTHENTICATION_SUCCESS'),(108,'admin','2017-12-18 10:21:12','AUTHENTICATION_SUCCESS'),(109,'admin','2017-12-19 01:56:22','AUTHENTICATION_SUCCESS'),(110,'admin','2017-12-19 01:58:54','AUTHENTICATION_SUCCESS'),(111,'access-token','2017-12-19 08:40:22','AUTHENTICATION_FAILURE'),(112,'access-token','2017-12-19 08:40:24','AUTHENTICATION_FAILURE'),(113,'access-token','2017-12-19 08:43:38','AUTHENTICATION_FAILURE'),(114,'access-token','2017-12-25 03:36:35','AUTHENTICATION_FAILURE'),(115,'admin','2018-01-03 02:49:09','AUTHENTICATION_SUCCESS'),(116,'admin','2018-01-03 02:51:55','AUTHENTICATION_SUCCESS'),(117,'admin','2018-01-03 03:02:19','AUTHENTICATION_SUCCESS'),(118,'admin','2018-01-03 03:03:03','AUTHENTICATION_SUCCESS'),(119,'admin','2018-01-03 03:27:25','AUTHENTICATION_SUCCESS'),(120,'admin','2018-01-03 03:27:35','AUTHENTICATION_SUCCESS'),(121,'access-token','2018-01-10 07:08:52','AUTHENTICATION_FAILURE'),(122,'access-token','2018-01-10 07:09:52','AUTHENTICATION_FAILURE'),(123,'admin','2018-01-10 07:10:27','AUTHENTICATION_SUCCESS'),(124,'admin','2018-01-10 07:11:53','AUTHENTICATION_SUCCESS'),(125,'admin','2018-01-10 07:12:06','AUTHENTICATION_SUCCESS'),(126,'admin','2018-01-10 07:13:05','AUTHENTICATION_SUCCESS'),(127,'admin','2018-01-10 07:15:54','AUTHENTICATION_SUCCESS'),(128,'admin','2018-01-10 07:16:05','AUTHENTICATION_SUCCESS'),(129,'admin','2018-01-10 07:20:49','AUTHENTICATION_SUCCESS'),(130,'admin','2018-01-10 07:24:29','AUTHENTICATION_SUCCESS'),(131,'admin','2018-01-10 07:24:35','AUTHENTICATION_SUCCESS'),(132,'admin','2018-01-10 07:24:43','AUTHENTICATION_SUCCESS'),(133,'admin','2018-01-10 07:25:13','AUTHENTICATION_SUCCESS'),(134,'admin','2018-01-10 07:25:22','AUTHENTICATION_SUCCESS'),(135,'admin','2018-01-10 07:26:10','AUTHENTICATION_SUCCESS'),(136,'admin','2018-01-10 07:27:04','AUTHENTICATION_SUCCESS'),(137,'admin','2018-01-10 07:27:43','AUTHENTICATION_SUCCESS'),(138,'admin','2018-01-10 07:30:21','AUTHENTICATION_SUCCESS'),(139,'admin','2018-01-10 07:31:17','AUTHENTICATION_SUCCESS'),(140,'admin','2018-01-10 07:32:14','AUTHENTICATION_SUCCESS'),(141,'admin','2018-01-10 07:32:17','AUTHENTICATION_SUCCESS'),(142,'admin','2018-01-12 09:11:11','AUTHENTICATION_SUCCESS'),(143,'admin','2018-01-12 09:12:40','AUTHENTICATION_SUCCESS'),(144,'admin','2018-01-12 09:52:37','AUTHENTICATION_SUCCESS'),(145,'admin','2018-01-12 09:52:46','AUTHENTICATION_SUCCESS'),(146,'admin','2018-01-12 09:57:52','AUTHENTICATION_SUCCESS'),(147,'admin','2018-01-12 09:58:03','AUTHENTICATION_SUCCESS'),(148,'admin','2018-01-12 09:58:50','AUTHENTICATION_SUCCESS'),(149,'admin','2018-01-12 10:00:14','AUTHENTICATION_SUCCESS'),(150,'admin','2018-01-12 10:01:04','AUTHENTICATION_SUCCESS'),(151,'admin','2018-01-15 02:21:16','AUTHENTICATION_SUCCESS'),(152,'admin','2018-01-15 02:21:27','AUTHENTICATION_SUCCESS'),(153,'admin','2018-01-15 02:22:32','AUTHENTICATION_SUCCESS'),(154,'access-token','2018-01-15 03:10:42','AUTHENTICATION_FAILURE'),(155,'admin','2018-01-15 03:11:11','AUTHENTICATION_SUCCESS'),(156,'admin','2018-01-15 03:11:35','AUTHENTICATION_SUCCESS'),(157,'admin','2018-01-15 03:12:27','AUTHENTICATION_SUCCESS'),(158,'admin','2018-01-15 03:59:05','AUTHENTICATION_SUCCESS'),(159,'admin','2018-01-15 04:00:50','AUTHENTICATION_SUCCESS'),(160,'admin','2018-01-15 04:01:17','AUTHENTICATION_SUCCESS'),(161,'admin','2018-01-15 04:02:25','AUTHENTICATION_SUCCESS'),(162,'admin','2018-01-15 04:02:41','AUTHENTICATION_SUCCESS'),(163,'admin','2018-01-15 04:02:59','AUTHENTICATION_SUCCESS'),(164,'admin','2018-01-15 04:04:11','AUTHENTICATION_SUCCESS'),(165,'admin','2018-01-15 06:51:46','AUTHENTICATION_SUCCESS'),(166,'admin','2018-01-15 06:52:09','AUTHENTICATION_SUCCESS'),(167,'admin','2018-01-15 07:21:12','AUTHENTICATION_SUCCESS'),(168,'admin','2018-01-15 07:21:17','AUTHENTICATION_SUCCESS'),(169,'admin','2018-01-15 07:22:29','AUTHENTICATION_SUCCESS'),(170,'admin','2018-01-15 07:22:34','AUTHENTICATION_SUCCESS'),(171,'admin','2018-01-15 07:45:55','AUTHENTICATION_SUCCESS'),(172,'admin','2018-01-15 07:47:37','AUTHENTICATION_SUCCESS'),(173,'admin','2018-01-15 07:47:48','AUTHENTICATION_SUCCESS'),(174,'admin','2018-01-15 07:48:40','AUTHENTICATION_SUCCESS'),(175,'admin','2018-01-15 07:49:59','AUTHENTICATION_SUCCESS'),(176,'admin','2018-01-15 07:53:54','AUTHENTICATION_SUCCESS'),(177,'admin','2018-01-15 07:54:32','AUTHENTICATION_SUCCESS'),(178,'admin','2018-01-15 08:30:53','AUTHENTICATION_SUCCESS'),(179,'admin','2018-01-15 08:31:54','AUTHENTICATION_SUCCESS'),(180,'admin','2018-01-15 08:32:01','AUTHENTICATION_SUCCESS'),(181,'admin','2018-01-15 08:32:12','AUTHENTICATION_SUCCESS'),(182,'admin','2018-01-15 08:33:05','AUTHENTICATION_SUCCESS'),(183,'admin','2018-01-15 08:35:26','AUTHENTICATION_SUCCESS'),(184,'admin','2018-01-15 08:35:30','AUTHENTICATION_SUCCESS'),(185,'admin','2018-01-15 08:35:50','AUTHENTICATION_SUCCESS'),(186,'admin','2018-01-24 03:38:43','AUTHENTICATION_SUCCESS'),(187,'admin','2018-01-24 03:38:56','AUTHENTICATION_SUCCESS'),(188,'admin','2018-01-24 03:39:13','AUTHENTICATION_SUCCESS'),(189,'admin','2018-01-24 03:42:52','AUTHENTICATION_SUCCESS'),(190,'admin','2018-01-24 03:50:19','AUTHENTICATION_SUCCESS'),(191,'admin','2018-01-24 03:57:45','AUTHENTICATION_SUCCESS'),(192,'admin','2018-01-24 03:58:36','AUTHENTICATION_SUCCESS'),(193,'admin','2018-01-24 04:00:54','AUTHENTICATION_SUCCESS'),(194,'admin','2018-01-24 04:01:00','AUTHENTICATION_SUCCESS'),(195,'admin','2018-01-24 06:27:04','AUTHENTICATION_SUCCESS'),(196,'admin','2018-01-24 06:28:35','AUTHENTICATION_SUCCESS'),(197,'admin','2018-01-24 06:29:54','AUTHENTICATION_SUCCESS'),(198,'admin','2018-01-24 06:30:10','AUTHENTICATION_SUCCESS'),(199,'admin','2018-01-24 06:30:21','AUTHENTICATION_SUCCESS'),(200,'access-token','2018-01-24 06:31:36','AUTHENTICATION_FAILURE'),(201,'admin','2018-01-24 06:31:46','AUTHENTICATION_SUCCESS'),(202,'admin','2018-01-24 06:32:00','AUTHENTICATION_SUCCESS'),(203,'admin','2018-01-24 06:32:07','AUTHENTICATION_SUCCESS'),(204,'admin','2018-01-24 06:32:09','AUTHENTICATION_SUCCESS'),(205,'admin','2018-01-24 06:47:22','AUTHENTICATION_SUCCESS'),(206,'admin','2018-01-24 09:24:04','AUTHENTICATION_SUCCESS'),(207,'admin','2018-01-24 09:26:17','AUTHENTICATION_SUCCESS'),(208,'admin','2018-01-24 09:27:19','AUTHENTICATION_SUCCESS'),(209,'admin','2018-01-24 09:28:07','AUTHENTICATION_SUCCESS'),(210,'admin','2018-01-24 09:28:34','AUTHENTICATION_SUCCESS'),(211,'admin','2018-01-24 09:31:28','AUTHENTICATION_SUCCESS'),(212,'admin','2018-01-24 09:32:17','AUTHENTICATION_SUCCESS'),(213,'admin','2018-01-24 09:39:38','AUTHENTICATION_SUCCESS'),(214,'admin','2018-01-24 09:40:10','AUTHENTICATION_SUCCESS'),(215,'admin','2018-01-24 09:44:10','AUTHENTICATION_SUCCESS'),(216,'admin','2018-01-24 09:58:39','AUTHENTICATION_SUCCESS'),(217,'admin','2018-01-24 09:59:09','AUTHENTICATION_SUCCESS'),(218,'admin','2018-01-24 09:59:21','AUTHENTICATION_SUCCESS'),(219,'admin','2018-01-24 10:03:30','AUTHENTICATION_SUCCESS'),(220,'admin','2018-01-24 10:03:59','AUTHENTICATION_SUCCESS'),(221,'admin','2018-01-24 10:09:53','AUTHENTICATION_SUCCESS'),(222,'admin','2018-01-24 10:15:02','AUTHENTICATION_SUCCESS'),(223,'admin','2018-01-24 10:24:46','AUTHENTICATION_SUCCESS'),(224,'admin','2018-01-24 10:25:59','AUTHENTICATION_SUCCESS'),(225,'admin','2018-01-24 10:32:59','AUTHENTICATION_SUCCESS'),(226,'admin','2018-01-24 10:35:31','AUTHENTICATION_SUCCESS'),(227,'admin','2018-01-24 10:36:50','AUTHENTICATION_SUCCESS'),(228,'access-token','2018-01-25 02:18:51','AUTHENTICATION_FAILURE'),(229,'access-token','2018-01-25 02:18:59','AUTHENTICATION_FAILURE'),(230,'admin','2018-01-25 02:19:45','AUTHENTICATION_SUCCESS'),(231,'admin','2018-01-25 02:20:55','AUTHENTICATION_SUCCESS'),(232,'admin','2018-01-25 02:22:11','AUTHENTICATION_SUCCESS'),(233,'admin','2018-01-25 02:23:59','AUTHENTICATION_SUCCESS'),(234,'admin','2018-01-25 02:26:48','AUTHENTICATION_SUCCESS'),(235,'admin','2018-01-25 02:40:28','AUTHENTICATION_SUCCESS'),(236,'admin','2018-01-25 02:41:30','AUTHENTICATION_SUCCESS'),(237,'admin','2018-01-25 02:43:36','AUTHENTICATION_SUCCESS'),(238,'access-token','2018-01-25 02:45:34','AUTHENTICATION_FAILURE'),(239,'admin','2018-01-25 02:45:42','AUTHENTICATION_SUCCESS'),(240,'admin','2018-01-25 02:49:44','AUTHENTICATION_SUCCESS'),(241,'admin','2018-01-25 02:51:22','AUTHENTICATION_SUCCESS'),(242,'access-token','2018-01-25 02:51:58','AUTHENTICATION_FAILURE'),(243,'admin','2018-01-25 02:52:07','AUTHENTICATION_SUCCESS'),(244,'admin','2018-01-25 02:52:16','AUTHENTICATION_SUCCESS'),(245,'admin','2018-01-25 02:52:24','AUTHENTICATION_SUCCESS'),(246,'admin','2018-01-25 02:58:59','AUTHENTICATION_SUCCESS'),(247,'admin','2018-01-25 03:00:08','AUTHENTICATION_SUCCESS'),(248,'admin','2018-01-25 03:00:14','AUTHENTICATION_SUCCESS'),(249,'admin','2018-01-25 03:02:26','AUTHENTICATION_SUCCESS'),(250,'admin','2018-01-25 03:02:32','AUTHENTICATION_SUCCESS'),(251,'admin','2018-01-25 03:05:42','AUTHENTICATION_SUCCESS'),(252,'admin','2018-01-25 03:07:01','AUTHENTICATION_SUCCESS'),(253,'admin','2018-01-25 03:08:25','AUTHENTICATION_SUCCESS'),(254,'admin','2018-01-25 03:09:51','AUTHENTICATION_SUCCESS'),(255,'admin','2018-01-25 03:10:03','AUTHENTICATION_SUCCESS'),(256,'admin','2018-01-25 03:10:12','AUTHENTICATION_SUCCESS'),(257,'admin','2018-01-25 03:10:58','AUTHENTICATION_SUCCESS'),(258,'admin','2018-01-25 03:11:18','AUTHENTICATION_SUCCESS'),(259,'admin','2018-01-25 03:11:33','AUTHENTICATION_SUCCESS'),(260,'admin','2018-01-25 03:11:56','AUTHENTICATION_SUCCESS'),(261,'admin','2018-01-25 03:12:06','AUTHENTICATION_SUCCESS'),(262,'admin','2018-01-25 03:12:12','AUTHENTICATION_SUCCESS'),(263,'admin','2018-01-25 03:13:39','AUTHENTICATION_SUCCESS'),(264,'admin','2018-01-25 03:13:44','AUTHENTICATION_SUCCESS'),(265,'admin','2018-01-25 03:20:13','AUTHENTICATION_SUCCESS'),(266,'admin','2018-01-25 03:20:26','AUTHENTICATION_SUCCESS'),(267,'admin','2018-01-25 03:20:33','AUTHENTICATION_SUCCESS'),(268,'admin','2018-01-25 03:21:42','AUTHENTICATION_SUCCESS'),(269,'admin','2018-01-25 03:22:20','AUTHENTICATION_SUCCESS'),(270,'access-token','2018-01-25 03:37:15','AUTHENTICATION_FAILURE'),(271,'admin','2018-01-25 03:37:26','AUTHENTICATION_SUCCESS'),(272,'admin','2018-01-25 03:37:43','AUTHENTICATION_SUCCESS'),(273,'admin','2018-01-25 03:38:28','AUTHENTICATION_SUCCESS'),(274,'admin','2018-01-25 03:38:33','AUTHENTICATION_SUCCESS'),(275,'access-token','2018-01-25 03:40:30','AUTHENTICATION_FAILURE'),(276,'access-token','2018-01-25 03:40:45','AUTHENTICATION_FAILURE'),(277,'access-token','2018-01-25 03:40:50','AUTHENTICATION_FAILURE'),(278,'access-token','2018-01-25 03:41:27','AUTHENTICATION_FAILURE'),(279,'access-token','2018-01-25 03:41:40','AUTHENTICATION_FAILURE'),(280,'access-token','2018-01-25 03:41:59','AUTHENTICATION_FAILURE'),(281,'admin','2018-01-25 03:42:55','AUTHENTICATION_SUCCESS'),(282,'admin','2018-01-25 03:46:07','AUTHENTICATION_SUCCESS'),(283,'admin','2018-01-25 03:47:41','AUTHENTICATION_SUCCESS'),(284,'access-token','2018-01-25 03:48:24','AUTHENTICATION_FAILURE'),(285,'admin','2018-01-25 03:48:34','AUTHENTICATION_SUCCESS'),(286,'admin','2018-01-25 03:48:57','AUTHENTICATION_SUCCESS'),(287,'admin','2018-01-25 03:49:20','AUTHENTICATION_SUCCESS'),(288,'admin','2018-01-25 03:52:39','AUTHENTICATION_SUCCESS'),(289,'admin','2018-01-25 03:52:50','AUTHENTICATION_SUCCESS'),(290,'admin','2018-01-25 03:53:40','AUTHENTICATION_SUCCESS'),(291,'admin','2018-01-25 04:00:55','AUTHENTICATION_SUCCESS'),(292,'admin','2018-01-25 04:01:02','AUTHENTICATION_SUCCESS'),(293,'admin','2018-01-25 04:01:36','AUTHENTICATION_SUCCESS'),(294,'access-token','2018-01-25 06:47:52','AUTHENTICATION_FAILURE'),(295,'admin','2018-01-25 06:49:25','AUTHENTICATION_SUCCESS'),(296,'admin','2018-01-25 06:50:41','AUTHENTICATION_SUCCESS'),(297,'admin','2018-01-25 06:51:34','AUTHENTICATION_SUCCESS'),(298,'admin','2018-01-25 06:52:04','AUTHENTICATION_SUCCESS'),(299,'admin','2018-01-25 06:52:17','AUTHENTICATION_SUCCESS'),(300,'admin','2018-01-25 06:52:25','AUTHENTICATION_SUCCESS'),(301,'admin','2018-01-25 09:39:18','AUTHENTICATION_SUCCESS'),(302,'admin','2018-01-25 09:40:41','AUTHENTICATION_SUCCESS'),(303,'admin','2018-01-25 09:44:58','AUTHENTICATION_SUCCESS'),(304,'admin','2018-01-25 09:45:45','AUTHENTICATION_SUCCESS'),(305,'admin','2018-01-25 09:46:33','AUTHENTICATION_SUCCESS'),(306,'admin','2018-01-25 09:47:25','AUTHENTICATION_SUCCESS'),(307,'admin','2018-01-25 09:51:53','AUTHENTICATION_SUCCESS'),(308,'admin','2018-01-25 09:54:38','AUTHENTICATION_SUCCESS'),(309,'admin','2018-01-25 09:54:47','AUTHENTICATION_SUCCESS'),(310,'access-token','2018-01-30 06:40:04','AUTHENTICATION_FAILURE'),(311,'admin','2018-01-30 06:41:54','AUTHENTICATION_SUCCESS'),(312,'admin','2018-01-30 06:44:33','AUTHENTICATION_SUCCESS'),(313,'admin','2018-01-30 06:45:36','AUTHENTICATION_SUCCESS'),(314,'admin','2018-01-30 07:20:03','AUTHENTICATION_SUCCESS'),(315,'access-token','2018-01-30 09:04:48','AUTHENTICATION_FAILURE'),(316,'admin','2018-01-30 09:05:19','AUTHENTICATION_SUCCESS'),(317,'admin','2018-02-02 09:51:30','AUTHENTICATION_SUCCESS'),(318,'admin','2018-02-02 09:51:35','AUTHENTICATION_SUCCESS'),(319,'admin','2018-02-02 09:51:41','AUTHENTICATION_SUCCESS'),(320,'admin','2018-02-02 09:52:23','AUTHENTICATION_SUCCESS'),(321,'admin','2018-02-02 09:53:50','AUTHENTICATION_SUCCESS'),(322,'admin','2018-02-02 09:54:21','AUTHENTICATION_SUCCESS');
+/*!40000 ALTER TABLE `jhi_persistent_audit_event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_persistent_audit_evt_data`
+--
+
+DROP TABLE IF EXISTS `jhi_persistent_audit_evt_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_persistent_audit_evt_data` (
+  `event_id` bigint(20) NOT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`event_id`,`name`),
+  CONSTRAINT `FK2ehnyx2si4tjd2nt4q7y40v8m` FOREIGN KEY (`event_id`) REFERENCES `jhi_persistent_audit_event` (`event_id`),
+  CONSTRAINT `jhi_persistent_audit_evt_data_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `jhi_persistent_audit_event` (`event_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_persistent_audit_evt_data`
+--
+
+LOCK TABLES `jhi_persistent_audit_evt_data` WRITE;
+/*!40000 ALTER TABLE `jhi_persistent_audit_evt_data` DISABLE KEYS */;
+INSERT INTO `jhi_persistent_audit_evt_data` VALUES (1,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(2,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(3,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(4,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(5,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(6,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(7,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(8,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(9,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(10,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(11,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(12,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(13,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(14,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(15,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(16,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(17,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(18,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(19,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(20,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(21,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(22,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(23,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(24,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(25,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(25,'org.springframework.security.authentication.BadCredentialsException','type'),(26,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(27,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(28,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(29,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(30,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(31,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(32,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(33,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(34,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(35,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(36,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(37,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(38,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(39,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(40,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzNTIzMTc5LCJqdGkiOiIyOTE5YjIyMC0zY2FiLTQ1OTYtYjdhMS1kYmVhODFiYmI5OWYiLCJjbGllbnRfaWQiOiJ0ZXN0In0.gBCmwM33ZXFqC8yMdq-hMsnlPQxXjemTB7JZdP2RS2vywg2_qD1s','message'),(40,'org.springframework.security.authentication.BadCredentialsException','type'),(41,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(42,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(43,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(44,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(45,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(46,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(47,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(48,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(49,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(50,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(51,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(52,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(53,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(54,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(55,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(56,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(57,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(58,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(59,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(60,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(61,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(62,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(63,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(64,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(65,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(66,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(67,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(68,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(69,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(70,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(71,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(72,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(73,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(74,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(75,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(76,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(77,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(78,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(79,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(80,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(81,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(82,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(83,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(84,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(85,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(86,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(87,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(88,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(89,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(90,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(91,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(92,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(93,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(94,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(95,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(96,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(97,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(98,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(99,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(100,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(101,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(102,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(103,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(104,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(105,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(106,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(107,'remoteAddress=127.0.0.1, tokenType=bearertokenValue=<TOKEN>','details'),(108,'remoteAddress=127.0.0.1, tokenType=bearertokenValue=<TOKEN>','details'),(109,'remoteAddress=127.0.0.1, tokenType=bearertokenValue=<TOKEN>','details'),(110,'remoteAddress=127.0.0.1, tokenType=bearertokenValue=<TOKEN>','details'),(111,'Cannot convert access token to JSON','message'),(111,'org.springframework.security.authentication.BadCredentialsException','type'),(112,'Cannot convert access token to JSON','message'),(112,'org.springframework.security.authentication.BadCredentialsException','type'),(113,'Cannot convert access token to JSON','message'),(113,'org.springframework.security.authentication.BadCredentialsException','type'),(114,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(114,'org.springframework.security.authentication.BadCredentialsException','type'),(115,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(116,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(117,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(118,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(119,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(120,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=bearertokenValue=<TOKEN>','details'),(121,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTQ5OTA3NzgsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwNTQ3M2JjZC0zOTE3LTRlMDgtOGRkZS0yZTRjZWNlOWMyMjciLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(121,'org.springframework.security.authentication.BadCredentialsException','type'),(122,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTQ5OTA3NzgsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwNTQ3M2JjZC0zOTE3LTRlMDgtOGRkZS0yZTRjZWNlOWMyMjciLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(122,'org.springframework.security.authentication.BadCredentialsException','type'),(123,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(124,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(125,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(126,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(127,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(128,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(129,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(130,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(131,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(132,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(133,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(134,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(135,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(136,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(137,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(138,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(139,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(140,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(141,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(142,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(143,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(144,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(145,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(146,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(147,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(148,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(149,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(150,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(151,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(152,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(153,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(154,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTU3OTE0MjgsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIyOWFiNmUwNC1jNDlmLTRjZTUtYTg3My0zOTUyODkzZGVmZjgiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(154,'org.springframework.security.authentication.BadCredentialsException','type'),(155,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(156,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(157,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(158,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(159,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(160,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(161,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(162,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(163,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(164,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(165,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(166,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(167,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(168,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(169,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(170,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(171,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(172,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(173,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(174,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(175,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(176,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(177,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(178,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(179,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(180,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(181,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(182,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(183,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(184,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(185,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(186,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(187,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(188,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(189,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(190,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(191,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(192,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(193,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(194,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(195,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(196,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(197,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(198,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(199,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(200,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(200,'org.springframework.security.authentication.BadCredentialsException','type'),(201,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(202,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(203,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(204,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(205,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(206,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(207,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(208,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(209,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(210,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(211,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(212,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(213,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(214,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(215,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(216,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(217,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(218,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(219,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(220,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(221,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(222,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(223,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(224,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(225,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(226,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(227,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(228,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4MDgzMTUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJiZGRkODc1Yi1hMDY2LTQ4MDEtYWUyOC1lYzUzMTFjY2NhMTkiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(228,'org.springframework.security.authentication.BadCredentialsException','type'),(229,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4MDgzMTUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJiZGRkODc1Yi1hMDY2LTQ4MDEtYWUyOC1lYzUzMTFjY2NhMTkiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(229,'org.springframework.security.authentication.BadCredentialsException','type'),(230,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(231,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(232,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(233,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(234,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(235,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(236,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(237,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(238,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4MDgzMTUsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJiZGRkODc1Yi1hMDY2LTQ4MDEtYWUyOC1lYzUzMTFjY2NhMTkiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(238,'org.springframework.security.authentication.BadCredentialsException','type'),(239,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(240,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(241,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(242,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(242,'org.springframework.security.authentication.BadCredentialsException','type'),(243,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(244,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(245,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(246,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(247,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(248,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(249,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(250,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(251,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(252,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(253,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(254,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(255,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(256,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(257,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(258,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(259,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(260,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(261,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(262,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(263,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(264,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(265,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(266,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(267,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(268,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(269,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(270,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(270,'org.springframework.security.authentication.BadCredentialsException','type'),(271,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(272,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(273,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(274,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(275,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(275,'org.springframework.security.authentication.BadCredentialsException','type'),(276,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(276,'org.springframework.security.authentication.BadCredentialsException','type'),(277,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(277,'org.springframework.security.authentication.BadCredentialsException','type'),(278,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(278,'org.springframework.security.authentication.BadCredentialsException','type'),(279,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(279,'org.springframework.security.authentication.BadCredentialsException','type'),(280,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTEzMjgyNjM2LCJqdGkiOiIzMzZjZmMxNy0yZjJkLTRmNGItODJlYi1hYTI2MmEyMDhmZDQiLCJjbGllbnRfaWQiOiJ0ZXN0In0.DWu_YvcpZmvntEHdHfUnwT6u7IAStcnI72efKyRSCLqIYcK_EXOO','message'),(280,'org.springframework.security.authentication.BadCredentialsException','type'),(281,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(282,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(283,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(284,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(284,'org.springframework.security.authentication.BadCredentialsException','type'),(285,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(286,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(287,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(288,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(289,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(290,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(291,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(292,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(293,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(294,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTYwMjYwNTYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiJmZDQ1OTI0MC0zZTNkLTQ0ZjItYThlOC1jNWE3MzEzZTY1YmEiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(294,'org.springframework.security.authentication.BadCredentialsException','type'),(295,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(296,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(297,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(298,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(299,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(300,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(301,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(302,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(303,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(304,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(305,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(306,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(307,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(308,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(309,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(310,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(310,'org.springframework.security.authentication.BadCredentialsException','type'),(311,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(312,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(313,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(314,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(315,'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTY4ODk5NjQsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJqdGkiOiIwMGYxZDM5My02MzRkLTRhMzUtYTgxNi1hMmE3MjlkZTMxMDYiLCJjbGllbnRfaWQiOiJ0ZXN0Iiwic2Nv','message'),(315,'org.springframework.security.authentication.BadCredentialsException','type'),(316,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(317,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(318,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(319,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(320,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(321,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details'),(322,'remoteAddress=0:0:0:0:0:0:0:1, tokenType=BearertokenValue=<TOKEN>','details');
+/*!40000 ALTER TABLE `jhi_persistent_audit_evt_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_persistent_token`
+--
+
+DROP TABLE IF EXISTS `jhi_persistent_token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_persistent_token` (
+  `series` varchar(255) NOT NULL,
+  `ip_address` varchar(39) DEFAULT NULL,
+  `token_date` date DEFAULT NULL,
+  `token_value` varchar(255) NOT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`series`),
+  KEY `FKmogh0vmv89yg5kofe6n3t77ud` (`user_id`) USING BTREE,
+  CONSTRAINT `FKmogh0vmv89yg5kofe6n3t77ud` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `jhi_persistent_token_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_persistent_token`
+--
+
+LOCK TABLES `jhi_persistent_token` WRITE;
+/*!40000 ALTER TABLE `jhi_persistent_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jhi_persistent_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_user`
+--
+
+DROP TABLE IF EXISTS `jhi_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `login` varchar(50) NOT NULL,
+  `password_hash` varchar(60) DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `image_url` varchar(256) DEFAULT NULL,
+  `activated` bit(1) NOT NULL,
+  `lang_key` varchar(5) DEFAULT NULL,
+  `activation_key` varchar(20) DEFAULT NULL,
+  `reset_key` varchar(20) DEFAULT NULL,
+  `created_by` varchar(50) NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `reset_date` timestamp NULL DEFAULT NULL,
+  `last_modified_by` varchar(50) DEFAULT NULL,
+  `last_modified_date` timestamp NULL DEFAULT NULL,
+  `tel` varchar(20) DEFAULT NULL,
+  `verified` tinyint(1) DEFAULT '0',
+  `wechat` varchar(30) DEFAULT NULL,
+  `identity` varchar(30) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `enterprise_name` varchar(255) DEFAULT NULL COMMENT '????',
+  `credit_code` varchar(255) DEFAULT NULL COMMENT '????????',
+  `is_legal_person` tinyint(1) DEFAULT NULL,
+  `created_data` tinyblob,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login` (`login`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_user`
+--
+
+LOCK TABLES `jhi_user` WRITE;
+/*!40000 ALTER TABLE `jhi_user` DISABLE KEYS */;
+INSERT INTO `jhi_user` VALUES (1,'system','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG','System','System','system@localhost','','','en',NULL,NULL,'system','2018-01-30 09:04:29',NULL,'system',NULL,NULL,0,'444444',NULL,NULL,NULL,NULL,NULL,NULL),(2,'anonymoususer','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO','Anonymous','User','anonymous@localhost','','','en',NULL,NULL,'system','2017-10-24 01:59:57',NULL,'system',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(3,'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','Administrator','Administrator','admin@localhost','','','en',NULL,NULL,'system','2017-10-24 01:59:58',NULL,'anonymousUser','2018-02-05 07:21:21','17629100289',0,'oMVrrwxG3U9TsM4OrxghbmU1bkB8',NULL,NULL,'33','33',0,NULL),(4,'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','User','User','user@localhost','','','en',NULL,NULL,'system','2017-10-24 02:00:03',NULL,'system',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'lyt1025','$2a$10$WIqt6ulPr8H5je9Yahkp1eGg5Ktf4PubGjyNvfMqKVKenGwD35pny',NULL,NULL,'7396970445@qq.com',NULL,'','zh-cn',NULL,NULL,'anonymousUser','2017-10-26 07:18:05',NULL,'anonymousUser','2018-02-05 03:04:44','17629100289',1,'oMVrrwxG3U9TsM4OrxghbmU1bkB8','610124199210250915','???','hehe','123456',1,NULL),(15,'lyt108825','$2a$10$jUvUHKOqhMnulnCZ.w3BpuoA5LaddSyqoiNlz.2Zz3/7jtOd4IIzy',NULL,NULL,'liuyatao1991@163.com',NULL,'','zh-cn',NULL,NULL,'anonymousUser','2018-01-03 03:02:58',NULL,'anonymousUser','2017-10-21 07:03:59','17629100289',1,NULL,'610124199210250915','???','hehe','123456',0,NULL),(34,'test1','$2a$10$14j/4GLeHDAvtek5QiAb4eUmm3xY4FV62qAiCPqyrgy8oKFBRh/Wq',NULL,NULL,'441076491@qq.com',NULL,'','zh-cn',NULL,NULL,'anonymousUser','2017-10-23 07:02:45',NULL,'test1','2017-10-23 07:06:50','17629100289',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'22','$2a$10$mk7Da3meNgvLR/so20g7W.h89.oosOCHGaSoH5yMAY13PWRrjBVYC',NULL,NULL,'739697044@qq.com',NULL,'','zh-cn',NULL,NULL,'test','2017-12-18 08:50:57',NULL,'anonymousUser','2018-01-23 07:24:55','17629100289',1,NULL,'62772727727727','liuyatao',NULL,NULL,NULL,NULL),(36,'457','$2a$10$iCoTiIkwbpvet1qmrL3hp.zPhWlwXXcdtlCbhsZgIdvLU.7cgkyga',NULL,NULL,'liuyatao1992@163.com',NULL,'','zh-cn',NULL,NULL,'admin','2018-01-03 03:04:03',NULL,'anonymousUser','2018-01-03 03:04:39',NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'17629100289','$2a$10$EYxk1riMAjNWIyEFVRP.2utuIDs3ZIJ3WrDtFxd/inrGcQ9wGBDNa',NULL,NULL,NULL,NULL,'','zh-cn',NULL,NULL,'admin','2018-01-10 07:13:05',NULL,'admin','2018-01-10 07:13:05','17629100289',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'liuyatao1992','$2a$10$ApYdPAPWZZH7YXOcp1heWuknPpuBtj/UoapjjxmqgQ65vMuabDySy',NULL,NULL,NULL,NULL,'','zh-cn',NULL,NULL,'admin','2018-01-10 07:30:21',NULL,'admin','2018-01-10 07:30:21','17629100289',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'76666666','$2a$10$88o.W8BBLvLXX5Voz7r9V.JcUT7kFIj3JNvFlFE37RU95xc/q38c.',NULL,NULL,NULL,NULL,'','zh-cn',NULL,NULL,'anonymousUser','2018-01-30 03:43:14',NULL,'anonymousUser','2018-01-30 03:43:14','17629100289',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `jhi_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `jhi_user_authority`
+--
+
+DROP TABLE IF EXISTS `jhi_user_authority`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jhi_user_authority` (
+  `user_id` bigint(20) NOT NULL,
+  `authority_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`user_id`,`authority_name`),
+  KEY `FK4psxl0jtx6nr7rhqbynr6itoc` (`authority_name`) USING BTREE,
+  CONSTRAINT `FK290okww5jujghp4el5i7mgwu0` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `FK4psxl0jtx6nr7rhqbynr6itoc` FOREIGN KEY (`authority_name`) REFERENCES `jhi_authority` (`name`),
+  CONSTRAINT `jhi_user_authority_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`),
+  CONSTRAINT `jhi_user_authority_ibfk_2` FOREIGN KEY (`authority_name`) REFERENCES `jhi_authority` (`name`),
+  CONSTRAINT `jhi_user_authority_ibfk_3` FOREIGN KEY (`authority_name`) REFERENCES `jhi_authority` (`name`),
+  CONSTRAINT `jhi_user_authority_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `jhi_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jhi_user_authority`
+--
+
+LOCK TABLES `jhi_user_authority` WRITE;
+/*!40000 ALTER TABLE `jhi_user_authority` DISABLE KEYS */;
+INSERT INTO `jhi_user_authority` VALUES (1,'ROLE_ADMIN'),(3,'ROLE_ADMIN'),(36,'ROLE_ADMIN'),(38,'ROLE_ADMIN'),(40,'ROLE_ADMIN'),(1,'ROLE_USER'),(3,'ROLE_USER'),(4,'ROLE_USER'),(14,'ROLE_USER'),(15,'ROLE_USER'),(34,'ROLE_USER'),(35,'ROLE_USER'),(41,'ROLE_USER');
+/*!40000 ALTER TABLE `jhi_user_authority` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `member`
+--
+
+DROP TABLE IF EXISTS `member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `member` (
+  `member_id` varchar(36) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `family_name` varchar(255) NOT NULL,
+  `given_name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`member_id`),
+  UNIQUE KEY `email` (`email`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `member`
+--
+
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES ('00000000-0000-0000-0000-000000000000','maki@example.com','Maki','Toshiaki','b9fe67bb31cb57a37b719cd9ad7742e9c435cd4fe6a3842d4391e28a685fdd24c230c58dbdbb590a'),('00000000-0000-0000-0000-000000000001','demo@example.com','Demo','Taro','b9fe67bb31cb57a37b719cd9ad7742e9c435cd4fe6a3842d4391e28a685fdd24c230c58dbdbb590a'),('499483e6-b3d5-4606-9a8d-33b3f2c320c0','739697044@qq.com','?','??','3cbdd4632432ccc27ca62e42c552d262b58a1583761da5ae76518d9dde4a8f2d063c9f78f657e56c');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `member_roles`
+--
+
+DROP TABLE IF EXISTS `member_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `member_roles` (
+  `member_member_id` varchar(36) NOT NULL,
+  `roles` varchar(255) NOT NULL,
+  KEY `member_member_id` (`member_member_id`) USING BTREE,
+  CONSTRAINT `member_roles_ibfk_1` FOREIGN KEY (`member_member_id`) REFERENCES `member` (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `member_roles`
+--
+
+LOCK TABLES `member_roles` WRITE;
+/*!40000 ALTER TABLE `member_roles` DISABLE KEYS */;
+INSERT INTO `member_roles` VALUES ('00000000-0000-0000-0000-000000000000','USER'),('00000000-0000-0000-0000-000000000000','ADMIN'),('00000000-0000-0000-0000-000000000001','USER'),('00000000-0000-0000-0000-000000000000','ACTUATOR'),('499483e6-b3d5-4606-9a8d-33b3f2c320c0','USER'),('499483e6-b3d5-4606-9a8d-33b3f2c320c0','ADMIN'),('499483e6-b3d5-4606-9a8d-33b3f2c320c0','ACTUATOR');
+/*!40000 ALTER TABLE `member_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persistent_logins`
+--
+
+DROP TABLE IF EXISTS `persistent_logins`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persistent_logins` (
+  `username` varchar(64) NOT NULL,
+  `series` varchar(64) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`series`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persistent_logins`
+--
+
+LOCK TABLES `persistent_logins` WRITE;
+/*!40000 ALTER TABLE `persistent_logins` DISABLE KEYS */;
+/*!40000 ALTER TABLE `persistent_logins` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `real_name`
+--
+
+DROP TABLE IF EXISTS `real_name`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `real_name` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(255) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `tel` varchar(30) DEFAULT NULL,
+  `front_image` varchar(255) DEFAULT NULL,
+  `back_image` varchar(255) DEFAULT NULL,
+  `selfie_image` varchar(255) DEFAULT NULL,
+  `identity` varchar(80) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `real_name`
+--
+
+LOCK TABLES `real_name` WRITE;
+/*!40000 ALTER TABLE `real_name` DISABLE KEYS */;
+INSERT INTO `real_name` VALUES (26,'lyt1025','???',NULL,'128f8e08-86e0-4f69-9188-2d1d7900aa6cWX20180119-125900@2x.png','19935801-b3af-42f6-bc0a-88a1a44fbfe6WX20180119-125900@2x.png','2017_09_28_16_57_091506589029846????.png','26','通过'),(42,'lyt108825','???',NULL,'2017_10_12_17_17_081507799828456Screen Shot 2017-04-18 at 4.52.05 PM.png','2017_10_12_17_17_081507799828456Screen Shot 2017-04-18 at 4.47.53 PM.png','2017_10_12_17_17_081507799828456215_094554_9255a.jpg','610124199210250915','通过'),(44,'test1','dfdsafdsfdsf',NULL,'2017_10_23_18_52_342yXBXmKHSXQQ??20171023154657.jpg','2017_10_23_18_52_34awRfXb2sDsQQ??20171023160913.png','2017_10_23_18_52_34PWk6YJJlMaQQ??20171023160913.png','46564441524545415',NULL),(61,'22','liuyatao',NULL,'6a76720c-1a63-41d4-8d72-7ae78d4540f1Screen Shot 2017-04-18 at 4.47.53 PM.png','517f588f-186f-4fb0-b49e-b9db1054147bScreen Shot 2017-04-18 at 4.47.53 PM.png',NULL,'62772727727727','通过');
+/*!40000 ALTER TABLE `real_name` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `schema_version`
+--
+
+DROP TABLE IF EXISTS `schema_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `schema_version` (
+  `version_rank` int(11) NOT NULL,
+  `installed_rank` int(11) NOT NULL,
+  `version` varchar(50) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `script` varchar(1000) NOT NULL,
+  `checksum` int(11) DEFAULT NULL,
+  `installed_by` varchar(100) NOT NULL,
+  `installed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `execution_time` int(11) NOT NULL,
+  `success` tinyint(1) NOT NULL,
+  PRIMARY KEY (`version`),
+  KEY `schema_version_vr_idx` (`version_rank`) USING BTREE,
+  KEY `schema_version_ir_idx` (`installed_rank`) USING BTREE,
+  KEY `schema_version_s_idx` (`success`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `schema_version`
+--
+
+LOCK TABLES `schema_version` WRITE;
+/*!40000 ALTER TABLE `schema_version` DISABLE KEYS */;
+INSERT INTO `schema_version` VALUES (1,1,'1','create-schema','SQL','V1__create-schema.sql',-1364577692,'root','2017-08-09 06:30:22',91,1),(2,2,'2','initial-data','SQL','V2__initial-data.sql',2002371984,'root','2017-08-09 06:30:22',58,1),(3,3,'3','remember-me','SQL','V3__remember-me.sql',1451649974,'root','2017-08-09 06:30:22',44,1),(4,4,'4','reset-password','SQL','V4__reset-password.sql',-354669920,'root','2017-08-09 06:30:22',13,1),(5,5,'5','rename-scopes','SQL','V5__rename-scopes.sql',-1291249904,'root','2017-08-09 06:30:22',8,1),(6,6,'6','add actuator role','SPRING_JDBC','db.migration.V6__add_actuator_role',NULL,'root','2017-08-09 06:30:22',22,1),(7,7,'7','add-resource-ids','SQL','V7__add-resource-ids.sql',-89992042,'root','2017-08-09 06:30:22',53,1),(8,8,'8','add credhub app','SPRING_JDBC','db.migration.V8__add_credhub_app',NULL,'root','2017-08-09 06:30:22',5,1);
+/*!40000 ALTER TABLE `schema_version` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-02-05 17:05:36
